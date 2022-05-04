@@ -1,0 +1,395 @@
+---
+title: "Bayesian Evidence Synthesis"
+subtitle: "*Updating evidence for hypotheses over heterogeneous studies using the Bayes factor*"
+author: "Thom Volker"
+institute: "Utrecht University"
+date: "`r format(Sys.Date(), '%d %B, %Y')`"
+output: 
+  html_document:
+    toc: true
+---
+
+# Simulation set-up
+
+Simulate three data sets according to three models
+
+- Ordinary Least Squares, logistic and probit regression
+
+Vary sample sizes and effect sizes
+
+- $n \in \{25, 50, 100, 200, 400, 800\}$
+
+- $R^2 \in \{0.02, 0.09, 0.25\}$
+
+- $R^2 = \frac{\text{Var}(X\boldsymbol{\beta})}{\text{Var}(Y)}$.
+
+- Fully crossed design (18 conditions per simulation)
+
+---
+
+
+## Simulation 1 & 2 - specifications
+
+4 predictor variables $X$ and an outcome $Y$ (continuous or binary)
+
+$\beta_2 = 2\beta_1; \beta_3 = 3\beta_1; \beta_4 = 4\beta_1$
+
+$H_1: \beta_1 < \beta_2 < \beta_3 < \beta_4$ vs $H_u: \beta_1, \beta_2, \beta_3, \beta_4$.
+
+$X \sim \mathcal{N}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$, $Y \sim \mathcal{N}(X\boldsymbol{\beta}, 1 - R^2)$ or $Y \sim \mathcal{B}(p)$.
+
+$$\boldsymbol{\mu} = 
+\begin{bmatrix} 
+0 \\ 
+0 \\ 
+0 \\ 
+0 \\
+\end{bmatrix}, ~~~~~~
+\boldsymbol{\Sigma} = 
+\begin{bmatrix}
+1 & 0.3 & 0.3 & 0.3 \\
+0.3 & 1 & 0.3 & 0.3 \\
+0.3 & 0.3 & 1 & 0.3 \\
+0.3 & 0.3 & 0.3 & 1 \\
+\end{bmatrix}.$$
+
+In simulation 2, a randomly selected study has a sample size of $n = 25$.
+
+---
+
+
+## Simulation 1 & 2 - results
+
+```{r sim12, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+library(magrittr)
+library(ggplot2)
+library(dplyr)
+library(purrr)
+
+load("../simulations/01_sample_size_equal.RData")
+
+output1 <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_1u = map_dbl(bf_u, ~.x[1]),
+         bf_cu = map_dbl(bf_u, ~.x[2]),
+         r2 = paste0("R^2: ", r2))
+
+BF1 <- output1 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), y = log(bf_1u), fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["1,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes factor over studies") +
+  theme(legend.position = "none")
+
+PMP1 <- output1 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u),
+            bf_cu = prod(bf_cu), .groups = "drop") %>%
+  mutate(pmp_1u = bf_1u / (bf_1u + 1),
+         pmp_1c = bf_1u / (bf_1u + bf_cu)) %>%
+  group_by(n, r2) %>%
+  summarize(pmp_1u = mean(pmp_1u),
+            pmp_1c = mean(pmp_1c)) %>%
+  tidyr::pivot_longer(c(pmp_1u, pmp_1c)) %>%
+  ggplot(aes(x = n, y = value, col = name)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(PMP))
+  
+
+rm(list = c("output", "output1"))
+
+load("../simulations/02_sample_size_underpowered.RData")
+
+output2 <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_1u = map_dbl(bf_u, ~.x[1]),
+         bf_cu = map_dbl(bf_u, ~.x[2]),
+         r2 = paste0("R^2: ", r2))
+
+BF2 <- output2 %>%
+  group_by(nsim, n_initial, r2) %>%
+  summarize(bf_1u = prod(bf_1u), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n_initial), 
+             y = log(bf_1u), 
+             fill = as.factor(n_initial))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["1,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+PMP2 <- output2 %>%
+  group_by(nsim, n_initial, r2) %>%
+  summarize(bf_1u = prod(bf_1u),
+            bf_cu = prod(bf_cu), .groups = "drop") %>%
+  mutate(pmp_1u = bf_1u / (bf_1u + 1),
+         pmp_1c = bf_1u / (bf_1u + bf_cu)) %>%
+  group_by(n_initial, r2) %>%
+  summarize(pmp_1u = mean(pmp_1u),
+            pmp_1c = mean(pmp_1c)) %>%
+  tidyr::pivot_longer(c(pmp_1u, pmp_1c)) %>%
+  ggplot(aes(x = n_initial, y = value, col = name)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(PMP))
+
+rm(list = c("output", "output2"))
+```
+
+```{r fig12, echo = FALSE, message = FALSE, warning = FALSE, fig.height=6, out.width='90%', dpi = 800}
+library(patchwork)
+patchwork::wrap_plots(BF1 + labs(title = "Simulation 1"), 
+                      BF2 + labs(title = "Simulation 2"), ncol = 1)
+
+patchwork::wrap_plots(PMP1 + labs(title = "Simulation 1"),
+                      PMP2 + labs(title = "Simulation 2"), ncol = 1)
+```
+
+---
+
+## Simulation 3 & 4 - specifications
+
+Data generated with 5 predictor variables $X$ and an outcome $Y$.
+
+- Sim3: $\beta_1 = \beta_2 = \beta_3; \beta_4 = 2\beta_1; \beta_5 = 3\beta_1$
+
+    - $H_1: \{\beta_1, \beta_2, \beta_3\} > 0$ versus $H_u$.
+
+- Sim4: $X_1$, $X_2$ and $X_3$ collapsed into $X_{c} = \frac{X_1 + X_2 + X_3}{3}$
+
+    - $H_1: \beta_{c} > 0$
+
+Same models, effect sizes, sample sizes, etc.
+
+---
+
+## Simulation 3 & 4 - results
+
+```{r sim34, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+load("../simulations/03_separated_variables.RData")
+
+output3 <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_1u = map_dbl(bf_u, ~.x[1]),
+         bf_cu = map_dbl(bf_u, ~.x[2]),
+         r2 = paste0("R^2: ", r2))
+
+BF3 <- output3 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), y = log(bf_1u), fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["1,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes factor over studies") +
+  theme(legend.position = "none")
+
+PMP3 <- output3 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u),
+            bf_cu = prod(bf_cu), .groups = "drop") %>%
+  mutate(pmp_1u = bf_1u / (bf_1u + 1),
+         pmp_1c = bf_1u / (bf_1u + bf_cu)) %>%
+  group_by(n, r2) %>%
+  summarize(pmp_1u = mean(pmp_1u),
+            pmp_1c = mean(pmp_1c)) %>%
+  tidyr::pivot_longer(c(pmp_1u, pmp_1c)) %>%
+  ggplot(aes(x = n, y = value, col = name)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(PMP))
+
+rm(list = c("output", "output3"))
+
+load("../simulations/05_combined_variable_mean.RData")
+
+output4 <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_1u = map_dbl(bf_u, ~.x[1]),
+         bf_cu = map_dbl(bf_u, ~.x[2]),
+         r2 = paste0("R^2: ", r2))
+
+BF4 <- output4 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), 
+             y = log(bf_1u), 
+             fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["1,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+PMP4 <- output4 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u),
+            bf_cu = prod(bf_cu), .groups = "drop") %>%
+  mutate(pmp_1u = bf_1u / (bf_1u + 1),
+         pmp_1c = bf_1u / (bf_1u + bf_cu)) %>%
+  group_by(n, r2) %>%
+  summarize(pmp_1u = mean(pmp_1u),
+            pmp_1c = mean(pmp_1c)) %>%
+  tidyr::pivot_longer(c(pmp_1u, pmp_1c)) %>%
+  ggplot(aes(x = n, y = value, col = name)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(PMP))
+
+rm(list = c("output", "output4"))
+```
+
+```{r fig34, echo = FALSE, message = FALSE, warning = FALSE, fig.height=6, out.width='90%', dpi = 800}
+library(patchwork)
+
+patchwork::wrap_plots(BF3 + labs(title = "Simulation 3"), 
+                      BF4 + labs(title = "Simulation 4"), ncol = 1)
+
+patchwork::wrap_plots(PMP3 + labs(title = "Simulation 3"),
+                      PMP4 + labs(title = "Simulation 4"), ncol = 1)
+```
+
+---
+
+## Simulation 5 & 6 - specifications
+
+Data generated with 2 predictor variables $X$ and an outcome $Y$.
+
+- Sim5: $\beta_2 = 2\beta_1$.
+
+    - $H_1: \beta_2 > 0$ versus $H_u$.
+    
+- Sim6: $X_2$ categorized into dummies $D_{low}$, $D_{med}$ and $D_{high}$.
+
+    - $D_{low} = (-\infty, `r round(qnorm(1/3), 2)`]$
+    - $D_{med} = (`r round(qnorm(1/3), 2)`, `r round(qnorm(2/3), 2)`]$
+    - $D_{high} = (`r round(qnorm(2/3), 2)`, \infty)$
+    
+---
+
+## Simulation 5 & 6 - results
+
+```{r sim56, echo = FALSE, message = FALSE, warning = FALSE, cache = TRUE}
+load("../simulations/06_dummied_variable.RData")
+
+output5 <- output_c %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_1u = map_dbl(bf_u, ~.x[1]),
+         bf_cu = map_dbl(bf_u, ~.x[2]),
+         r2 = paste0("R^2: ", r2))
+
+BF5 <- output5 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), y = log(bf_1u), fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["1,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes factor over studies") +
+  theme(legend.position = "none")
+
+PMP5 <- output5 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u),
+            bf_cu = prod(bf_cu), .groups = "drop") %>%
+  mutate(pmp_1u = bf_1u / (bf_1u + 1),
+         pmp_1c = bf_1u / (bf_1u + bf_cu)) %>%
+  group_by(n, r2) %>%
+  summarize(pmp_1u = mean(pmp_1u),
+            pmp_1c = mean(pmp_1c)) %>%
+  tidyr::pivot_longer(c(pmp_1u, pmp_1c)) %>%
+  ggplot(aes(x = n, y = value, col = name)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(PMP))
+
+
+output6 <- output_d %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_1u = map_dbl(bf_u, ~.x[1]),
+         bf_cu = map_dbl(bf_u, ~.x[2]),
+         r2 = paste0("R^2: ", r2))
+
+BF6 <- output6 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), 
+             y = log(bf_1u), 
+             fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["1,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+PMP6 <- output6 %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_1u = prod(bf_1u),
+            bf_cu = prod(bf_cu), .groups = "drop") %>%
+  mutate(pmp_1u = bf_1u / (bf_1u + 1),
+         pmp_1c = bf_1u / (bf_1u + bf_cu)) %>%
+  group_by(n, r2) %>%
+  summarize(pmp_1u = mean(pmp_1u),
+            pmp_1c = mean(pmp_1c)) %>%
+  tidyr::pivot_longer(c(pmp_1u, pmp_1c)) %>%
+  ggplot(aes(x = n, y = value, col = name)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_color_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(PMP))
+
+rm(list = c("output_c", "output_d", "output5", "output6"))
+```
+
+```{r fig56, echo = FALSE, message = FALSE, warning = FALSE, fig.height=6, out.width='90%', dpi = 800}
+library(patchwork)
+
+patchwork::wrap_plots(BF5 + labs(title = "Simulation 5"), 
+                      BF6 + labs(title = "Simulation 6"), ncol = 1)
+
+patchwork::wrap_plots(PMP5 + labs(title = "Simulation 5"),
+                      PMP6 + labs(title = "Simulation 7"), ncol = 1)
+```
+
+
+
+

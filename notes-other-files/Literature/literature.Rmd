@@ -1,0 +1,369 @@
+---
+title: "Literature"
+author: 
+- Thom Volker
+date: "`r format(Sys.time(), '%d-%m-%Y')`"
+output: 
+  html_document:
+    theme: spacelab
+    highlight: tango
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    number_sections: true
+bibliography: "/Users/thomvolker/Documents/Master_Thesis/thesis_literature.bib"
+csl: "/Users/thomvolker/Documents/styles/apa-6th-edition.csl"
+link-citations: yes
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+      equationNumbers: { 
+            autoNumber: "all",
+            formatNumber: function (n) {return n}
+      } 
+  }
+});
+</script>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Introduction
+
+## Repeating experiments is not enough
+
+**@munafo_robust_2018**
+
+Several studies across many fields estimate that only around $40\%$ of published findings can be replicated reliably. Various funders and communities are promoting ways for independent teams to routinely replicate the findings of others. These efforts are laudable, but insufficient. If a study is skewed and replications recapitulate that approach, findings will be consistently incorrect or biased.
+
+In some cases, routine replication might actually make matters worse. Consistent findings could take on the status of confirmed truths, when they actually reflect failings in study design, methods or analytical tools. Triangulation might be an essential protection against flawed ideas. This is the strategic use of multiple approaches to address one question. Each approach has its own unrelated assumptions, strengths and weaknesses. Results that agree across different methodologies are less likely to be artefacts.
+
+Scientists in today's hyper-competitive environment often lose sight of the need to pursue distinct strands of evidence. The problem was aptly described by William Kaelin, who lamented that the goal of the scientific paper had shiften from testing narrow conclusions in multiple ways to making a broadening series of assertions, each based on limited evidence. Consequently, he said, papers are increasingly like grand mansions of straw, rather than sturdy houses of brick.
+
+**Specious robustness**
+
+We rarely see projects that aim to prove a point from multiple views. Psychology, epidemiology and the clinical sciences are all geared towards producing statistically significant, definitive studies centred on an endpoint that supports a hypothesis. In parts of the biological sciences, a manuscript's acceptance often depends on a 'capstone' study showing animal efficacy, so pursuing that single experiment becomes more important than carefully probing an idea from all directions.
+
+An illuminating example is the oft-observed J-shaped curves that chart correlation between a condition and health outcome. For instance, multiple studies show that people who consume low levels of alcohol are healthier than heavy drinkers and tee-totallers, leading several researchers to conclude that moderate alcohol consumption promotes health. But other factors, such as unhealthy people being advised to give up drinking, would explain the same shape. Similarly, repeated observations that being slightly overweight is associated with the highest life expectancy might be explained by illness (including processes leading up to the manifestation of a disease, which itself can result in reduced weight); by physicians treating overweight individuals more aggressively; and by other favourable characteristics of overweight individuals, such as lower smoking rates.
+
+One example in which triangulation has helped is in establishing that smoking during pregnancy results in babies with lower birth weights. Triangulation means explicitly choosing analytical approaches that depend on different assumptions. For example, if a woman's partner smokes during her pregnancy, many of the same confounders apply as in maternal smoking, but the association with lower birth weight is much weaker. 
+
+**Replication fixation**
+
+Replication has received considerable attention, triangulation has not. Maybe on reason replication has captured to much interest is the often-repeated idea that falsification is at the heart of the scientific enterprise. This idea was popularized by Karl Popper's 1950s maxim that theories can never be proved, only falsified. Yet few experiments, including replication attempts, are explicitly set up to falsify a theory. In fact, we worry that an overemphasis on repeating experiments could provide an unfounded sense of certainty about findings that rely on a single approach. 
+
+Moreover, philosophers of science have moved on since Popper. Better descriptions of how scientists actually work include what epistemologist Peter Lipton called in 1991 "inference to the best explanation", or the search for the "loveliest" explanation. This draws on older ideas that championed abductive over deductive reasoning $-$ looking for likely explanations rather than deriving explanations from first principles. This spirit is also captured in the idea of consilience put forward by polymath William Whewell in the mid-nineteenth century and popularized in the 1990s by naturalist E. O. Wilson. Tis posits that strong theories emerge from the synthesis of multiple lines of evidence, as when Charles Darwin proposed evolution by natural selection.
+
+
+---
+
+
+## Triangulation in aetiological epidemiology
+
+**@lawlor_triangulation_2017**
+
+Triangulation refers to the situation in which there is a 'measure' that cannot be (easily) obtained (in aetiological epidemiology) this would be an unbiased causal effect estimate), and you estimate that measure from different locations (in aetiological epidemiology, from different approaches with different sources of bias). The authors propose the following definition of triangulation in aetiological epidemiology:
+
+> The practice of strengthening causal inferences by integrating results from several different approaches, where each approach has different (and assumed to be largely unrelated) key sources of potential bias.
+
+Other commonly used methods of integrating epidemiological evidence, such as independent replication or validation, meta-analysis and systematic reviews, seek to compare (and, in some cases, quantitatively combine) results from the same study design/approach under the assumption that they are all unbiased and estimating the same underlying causal effect. Triangulation aims to integrate data from different methodological approaches with different biases and to exploit these differences to draw qualitative conclusions. The idea behind triangulation is that when we compare different approaches with assumed unrelated sources of bias, particularly if the expected direction of bias for some of the approaches is different, we would not expect to obtain the same estimates of the causal effect (unless all were unbiased). Thus, triangulation has some features in common with Austin Bradford Hill's concept of 'consistency' which he defines in his considerations on causality as '[results that have] been repeatedly observed by different persons, in different places, circumstances and times' [@hill_1965_environment].
+
+
+**Criteria for triangulation in aetiological epidemiology**
+
+The following minimum set of criteria that should be fulfilled for triangulation to be valid in aetiological epidemiology, are proposed by the authors:
+
+- Results from at least two, but ideally more, different approaches with differing and unrelated key sources of potential biases, are compared.
+- The different approaches address the same underlying causal question.
+- Related to the above criterion, for each approach the duration and timing of exposure that is assesses is taken into account when comparing results.
+- For each approach the key sources of bias are explicitly acknowledged when comparing results.
+- For each approach, the expected direction of all key sources of potential bias are made explicit where this is feasible, and ideally within the set of approaches being compared there are approaches with potential biases that are in opposite directions.
+
+Using only different statistical methods that could all be used to analyse the same dataset is not the same as triangulation. Although different models might have different underlying statistical assumptions, these do not result in different key sources of bias, as most methods yield unbiased estimates. Key sources of biases from different methods applied to the same data set would be biased by the same measurement error and residual confounding due to unobserved and/or poorly measured confounders. Finding similar results from the application of each of them to a dataset and concluding that this similar answer is likely to be the correct causal answer would be clearly wrong; the similar answer is likely to be the r(residually) confounded answer. There is value in using several of these statistical methods in aetiological epidemiology to test the sensitivity of results to statistical model assumptions, as done in a recent study of the effect of reductions in housing benefit on mental health in the UK [@reeves_2016_reductions], but this is not triangulation.
+
+**What we mean by unrelated sources of bias**
+
+'Sources' of bias is referred to as the process through which specific biases might occur. For example, confounding may bias causal estimates from multivariable regression analyses in prospective cohort, RCT and MR studies, but the key source of confounding will differ for each of these approaches. In observational studies, the key source of confounding will be unmeasured or poorly measured confounders. In RCTs, failure to compare outcomes by the original randomized groups or subversion of the randomized process by researchers or participants is a likely key source of confounding.
+
+- RCT: randomized controlled trial
+- MR: Mendelian randomization
+- IV: instrumental variable
+
+
+Similarly, violation of the 'exclusion restriction criteria' could bias causal estimates in IV analyses when used to test effects of intermediates in RCTs or when used in observational data (including MR), but if the source of violation of this assumption is different, and unrelated, in each of these approaches it would be appropriate to triangulate them. The exclusion restriction criteria states that the IV, such as randomization to a treatment or a set of genetic variants, does not influence the outcome other than through the risk factor of interest. In some circumstances the key sources of violation of the exclusion restriction criteria might be the same, even when the study designs are different. In such instances, we would want to avoid comparing these studies in triangulation, as the key source of bias is essentially the same.
+
+In this paper, it is not considered how to pool data in a triangulation framework in order to produce a quantified causal effect estimate; neither is effect modification considered. Pooling of data (as in meta-analyses) assumes that all studies give unbiased estimates of the same underlying causal effect, and can be pooled to give one estimate. Since triangulation involves integration of data from very different approaches with the explicit intention of having expected biases in (at least) some of the approaches, simple pooling would not be appropriate. Methods could be developed to apply to triangulation to give plausible bounds of causal effect, and possibly exploring whether there are different bounds of ausal effects in different subgroups (suggesting effect modification).
+
+Considerable advances could be made within the triangulation framework, at modest cost but with greater access to research data. As more observational studies have genetic data, it will be increasingly possible to compare conventional multivariable regression approaches, MR and possibly negative control (exposure or outcome) studies within the same datasets. Cross-context comparisons would be enhanced by greated sharing of research data from cohorts across the globe. The application of IV analyses to test causal effects of intermediates in RCTs, or the use of RCTs to test effects of the primary intervention on a range of outcomes, would be enhanced by greater sharing of data.
+
+
+---
+
+
+## Bayesian evaluation of informative hypotheses for synthesizing evidence from diverse statistical models
+
+**@behrens_2019**
+
+To counterbalance the problems with replicability of scientific studies, several methodological approaches have been developed. First, meta-analysis has been suggested as a framework to estimate pooled effect sizes over all studies of interest, considering individual estimates and intra-study heterogeneity of effects [@cooper_handbook_2009; @lipsey_wilson_2001]. Second, in Bayesian updating, evidence is combined by merging various posterior distributions via so-called *power priors* [@ibrahim_chen_powerprior_2000]. Bayes theorem is repeatedly applied to a set of studies $t = 1, \dots, T$, where initial prior specifications remain uninformative and the posterior distribution of Study $t$ is used to define the prior distribution in Study $t + 1$. Repeatedly executing this process arrives at a posterior distribution that comprises information from all included studies.
+
+The current state-of-the-art methods come with an important shortcoming. Since regression coefficients or effect sizes are directly aggregated into a joint estimate or posterior distribution, integration is restricted to parameter estimates that share a common functional form and can be expressed in comparable units. Aggregating evidence that stems from diverse statistical models, on the other hand, is unfeasible, as coefficients from linear, logit or count regressions would need to be directly transformed into a common scale. Notably, in the social and political sciences, studies typically employ very diverse statistical models to investigate a joint underlying problem. Thus, the applicability of current approaches for the formal integration of statistical evidence is, at best, limited.
+
+**Informative Hypotheses**
+
+Let $\theta = [\theta_1, \theta_2, \dots, \theta_K]^T$ be the parameters of a GLM, GLMM or SEM. Informative hypotheses $H_m$ provide a framework to specify any number of expectations using equality ($=$), inequality ($<,>$) or the abscence ($,$) of constraints regarding any number of parameters in $\theta$. (In)equality constrained hypotheses take on the form of 
+$$
+H_m: S \theta = 0, R \theta > 0
+$$
+for $m = 1, \dots, M$. $S$ is a $q_s \times K$ matrix and $R$ is a $q_r \times K$ matrix representing the equality and inequality constraints of Hypothesis $H_m$. The number of rows in $S$ and $R$ equals the number of equality ($S$) and inequality ($R$) constraints. The number of columns equal the length of $\theta$. Often, researchers are interested in a single quantity of interest. Hence, in its most simple form, an informative hypothesis regarding one predictor of interest $\theta_1$ can be formulated as $H_1: \theta_1 > 0$. Additionally, complementing hypotheses $H_2: \theta_1 < 0$ and $H_0: \theta_1 = 0$ can be introduced. Jointly, these form the hypothesis set
+$$
+H_M^1 = \begin{matrix}
+H_0: \theta_1 = 0 \\
+H_1: \theta_1 > 0 \\
+H_2: \theta_1 < 0 \end{matrix}.
+$$
+For each hypothesis $H_m$ in $H_M^1$, it holds that $\theta = [\theta_1]^T$ and $K = 1$. In order to express $H_0$ using (in)equality constraints,
+$$
+S \theta = [1] [\theta] = 0, R \theta = [0] [\theta] > 0. \notag
+$$
+The equality constraint is specified in $S$, reasing as $1 \times \theta_1 = 0$. Since $H_0$ does not include an inequality constraint, $R$ is left empty. Hence, for $H_0$, it holds that $q_s = 1, q_r = 1$. Similarly, $H_1$ is defined as
+$$
+S \theta = [0] [\theta] = 0, R \theta = [1] [\theta] > 0 \notag
+$$
+and $H_2$ as
+$$
+S \theta = [0] [\theta] = 0, R \theta = [-1] [\theta] > 0. \notag
+$$
+As will be outlined in section 3, Bayesian evaluation of informative hypotheses evaluates all specified hypotheses jointly by comparing the extent to which the data at hand is in line with each expectation. Although for manu researchers, substantial expectations are limited to one quantity of interest, the possibilities of formulating informative hypotheses go far beyond this framework. For instance, researchers might be interested in multiple parameters $\theta = [\theta_1, \theta_2, \theta_3]^T$. One goal might be to investigate how these parameters jointly affect the outcome. In this multiple parameter case, the substantive hypotheses might be formulated as $H_1: \{\theta_1, \theta_2, \theta_3\} > 0$ and $H_2: \{\theta_1, \theta_2, \theta_3\} < 0$ to form the set
+$$
+H_M^2 = \begin{matrix}
+H_3: \{\theta_1, \theta_2, \theta_3\} > 0 \\
+H_4: \{\theta_1, \theta_2, \theta_3\} < 0
+\end{matrix}.
+$$
+Here, $H_3$ is defined as
+$$
+S = 
+\begin{bmatrix} 0 & 0 & 0 \end{bmatrix} 
+\begin{bmatrix} \theta_1 \\ \theta_2 \\ \theta_3 \end{bmatrix} = 0,
+~~~~~
+R = 
+\begin{bmatrix} 
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \end{bmatrix}
+\begin{bmatrix} \theta_1 \\ \theta_2 \\ \theta_3 \end{bmatrix} > 0
+$$
+and $H_4$ is defined as
+$$
+S = 
+\begin{bmatrix} 0 & 0 & 0 \end{bmatrix} 
+\begin{bmatrix} \theta_1 \\ \theta_2 \\ \theta_3 \end{bmatrix} = 0,
+~~~~~
+R = 
+\begin{bmatrix} 
+-1 & 0 & 0 \\
+0 & -1 & 0 \\
+0 & 0 & -1 \end{bmatrix}
+\begin{bmatrix} \theta_1 \\ \theta_2 \\ \theta_3 \end{bmatrix} > 0
+$$
+respectively. Taken even further, theoretical considerations often imply different estimates to be of different strengths. For example, a certain parameter $\theta_1$ can be expected to affect an outcome stronger than $\theta_2$ and $\theta_3$, while the literature might be inconclusive about how the latter two are related. Here, a researcher might want to evaluate a set of hypotheses like
+$$
+H_M^3 = \begin{matrix}
+\begin{aligned}
+& H_5: \theta_1 > \theta_2 > \theta_3 > 0 \\
+& H_6: \theta_1 > \{\theta_2 < \theta_3\} > 0
+\end{aligned}
+\end{matrix}.
+$$
+Like $H_3$, $H_5$ still states that all coefficients in $\theta$ are positive, but additionally formulates order constraints in a way that $\theta_1 > \theta_2, \theta_1 > \theta_3$ and $\theta_2 > \theta_3$ while $\{\theta_1, \theta_2, \theta_3\} > 0$. Hence, $H_5$ extends the equality ($S$) and inequality ($R$) constraints of $H_3$ and is defined as
+$$
+S = 
+\begin{bmatrix} 0 & 0 & 0 \end{bmatrix} 
+\begin{bmatrix} \theta_1 \\ \theta_2 \\ \theta_3 \end{bmatrix} = 0,
+~~~~~
+R = 
+\begin{bmatrix} 
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & -1 & 0 \\
+1 & 0 & -1 \\
+0 & 1 & -1 
+\end{bmatrix}
+\begin{bmatrix} \theta_1 \\ \theta_2 \\ \theta_3 \end{bmatrix} > 0
+$$
+The strength of informative hypotheses is that any kind of theoretical expectations towards the relation among parameters can be directly expressed and tested. Importantly, unstandardized regression coefficients of $\theta$ do not only consider the strength of relationship between $y$ and $x_1$ versus $x_2$, but also inherit the scale of the respective predictor variables. Hence, when evaluating order constraints among predictor variables like in $H_M^3$, hypotheses consider standardized regression coefficients.
+
+**Bayesian evaluation of informative hypotheses**
+
+Bayesian evaluation of informative hypotheses uses the Bayes factor to quantify evidence for a set of competing expectations rather than the p-value. Assume we observe the data $y$, $X$, where $X$ is treated as fixed. Conceptually, from Bayes Theorem we obtain that the posterior probability of Hypothesis $H_m$ given $y$ is
+$$
+P(H_m|y) = \frac{P(y|H_m)P(H_m)}{P(y)}
+$$
+where the key term $P(y|H_m)$ expresses the probability that the observed data $y$ are generated under a specified hypothesis $H_m$. The key to Bayesian model comparison is to directly compare this quantity for different hypotheses $H_m$ and $H_{m'}$. From Equation 7, it follows that the posterior odds of $H_m$ against $H_{m'}$ are constructed by
+$$
+\frac{P(H_m|y)}{P(H_{m'|y})} = \frac{P(y|H_m)}{P(y|H_{m'})} \cdot \frac{P(H_m)}{P(H_{m'})}
+$$
+In words, posterior odds $=$ Bayes factor $\times$ prior odds. Hence, we can define the Bayes factor as
+$$
+\begin{aligned}
+BF_{mm'} &= \frac{P(y|H_m)}{P(y|H_{m'})} \\
+&= \frac{P(H_m|y)}{P(H_{m'}|y)} \cdot \frac{P(H_m')}{P(H_m)} \\
+&= \frac{P(H_m|y) / P(H_{m'}|y)}{P(H_m)/P(H_m')} .
+\end{aligned}
+$$
+Large posterior odds reward hypotheses that fit well given the data at hand as the Bayes factor grows with $P(H_m|y)$. Large prior odds penalize simplistic hypotheses that were very likely to find support from the data *a prior* and reward specific hypotheses that are harder to falsify as the Bayes factor diminishes with $P(H_m)$. 
+
+Once we parameterize $H_m$ and $H_{m'}$ using $\theta = [\theta_1, \theta_2, \dots, \theta_K]^T$ in empirical analyses, we can rewrite Equation 9 to
+$$
+\begin{aligned}
+BF_{mm'} &= \frac{m(y|H_m)}{m(y|H_{m'})} \\
+&= \frac{\int{f(y | \theta) p(\theta \in H_m) d \theta}}{\int{f(y | \theta) p(\theta \in H_{m'}) d \theta}},
+\end{aligned}
+$$
+and denote the Bayes factor $BF_{mm'}$ as the ratio of the two hypotheses' marginal likelihoods. The marginal likelihood $m(y|H_m)$ is defined as the likelihood of the data at hand $f(y|\theta)$ under all values in agreement with $H_m$ given a certain prior distribution $p(\theta \in H_m)$. Hence, $BF_{mm'}$ comparatively quantifies the relative plausibility of the two competing hypotheses given the data at hand.
+
+**A Bayes factor for informative hypotheses**
+
+Construction of Bayes factors depends on the construction of the integrals $\int_{\theta}{f(y|\theta) p(\theta) d \theta}$. For some elementary cases, this integral might be evaluated analytically. Once the dimensionality in $\theta$ increases, integrals need to be approximated by numerical methods. As a curse of dimension, these can be extremely computationally heavy and numerically unstable. Recently, @gu_approximated_2018 have proposed a computationally tractable Bayes factor for evaluating informative hypotheses based on any general statistical model.
+
+The key to this approach is the introduction of an unconstrained hypothesis
+$$
+H_u: \theta_1, \theta_2, \dots, \theta_k
+$$
+which does not empose any constraints and thus covers the parameter space in $\theta$ as a whole and to evaluate informative hypotheses $H_m$ against the unconstrained alternative $H_u$. Using the denotion of @chib_marginal_1995, we can rewrite the ratio of marginal likelihoods as
+$$
+BF = \frac{f(y|\theta) p(\theta_m)}{p(\theta_m|y)} \Bigg{/} 
+\frac{f(y| \theta) p(\theta_u)}{p(\theta_u|y)}
+$$
+where $f(y|\theta)$ is the sampling density, $p(\theta_m)$ is the prior density under $H_m$, and $p(\theta_m|y)$ is the posterior density under $H_m$. Notably, all (in)equality constrained hypotheses are nested under the unconstrained hypothesis $H_u$. Hence, we define $p(\theta_u)$ as an encompassing prior for $\theta$ given no constraints. As a result, the prior density of $\theta$ under any constrained hypothesis is proportional to $p(\theta_u)$ for the parameter space in $\theta$ that is covered by $H_m$ and given by
+$$
+p(\theta_m) = \frac{1}{c_m} p(\theta_u) ~ \text{if} ~ \theta \in H_m,
+$$
+where $c_m$ is a normalizing constant for the prior density
+$$
+c_m = \int_{\theta \in H_m} p(\theta_u) d \theta.
+$$
+Similarly, the posterior density of $\theta$ under any constrained hypothesis is proportional to the posterior $p(\theta_u|y)$ under the unconstrained hypothesis $H_u$ for the parameter space in $\theta$ that is covered by $H_m$ and given by
+$$
+p(\theta_m|y) = \frac{1}{f_m} p(\theta|y) ~ \text{if} ~ \theta \in H_m,
+$$
+where $f_m$ is a normalizing constant for the posterior density
+$$
+f_m = \int_{\theta \in H_m}{p(\theta_u|y) d\theta}.
+$$
+When exploiting the denotion of the Bayes factor from Equation 12 and substituting (11) and (13), we see that 
+$$
+\begin{aligned}
+BF_{mu} &= \frac{f(y|\theta)\frac{1}{c_m}p(\theta_u)}{\frac{1}{f_m}p(\theta_u|y)}
+\Bigg{/} \frac{f(y|\theta)p(\theta_u)}{p(\theta_u|y)} \\
+&= \frac{\frac{1}{c_m}p(\theta_u)}{\frac{1}{f_m}p(\theta_u|y)} 
+\Bigg{/} \frac{p(\theta_u)}{p(\theta_u|y)} \\
+&= \frac{\frac{1}{c_m}}{\frac{1}{f_m}} = \frac{f_m}{c_m},
+\end{aligned}
+$$
+which reduces Equation 10 to a simple fraction. For equality constrained hypotheses, Equation 12 is equal to the known Savage-Dickey density ratio (Dickey 1971)
+$$
+BF_{mu} = \frac{p(\theta \in H_m|y)}{p(\theta \in H_m)}.
+$$
+The numerator $f_m$ quantifies the fit of hypothesis $H_m$ and is the percentage of the posterior probability mass of these parameters that are in agreement with $H_m$. The denominator quantifies the complexity of hypothesis $H_m$ and is the average percentage of the prior probability mass that is in agreement with $H_m$. We see how this derivation of the Bayes factor for (in)equality constrained hypotheses is exactly in line with the intuition that we built into Equation 9. $f_m$ is a measure of fit and rewards hypotheses that fit the data well, hence that obtain more probability mass in the region specified by $H_m$. $c_m$ is a measure of how likely it was to find this hypothesis *a priori*, with vague hypothesis covering large parts of $\theta$ being penalized and specific hypotheses being rewarded. The Bayes factor comparing two informative hypotheses directly is then given by 
+$$
+BF_{mm'} = \frac{f_m / c_m}{f_{m'}/c_{m'}}.
+$$
+
+In the framework of informative hypotheses, to avoid prior specifications that are too vague @gu_approximated_2018 suggest to specify the prior variance considering the fractional Bayes factor approach of @ohagan_fractional_1995. In this approach, the prior is automatically generated using a fraction of the likelihood. The resulting fractional prior is specified using a noninformative prior and a proportion of the likelihood
+$$
+p(\theta|y^b) \propto f(y|\theta)^bp(\theta)
+$$
+where $p(\theta)$ is the noninformative prior distribution and $f(y|\theta)^b$ is the fraction of the likelihood determined by $b$. From Equation 20, the prior variance is derived. The resulting prior mean of $\theta$ is adjusted around the focal point of interest $\theta^*$ in $H_m$ such that Equation 20 turns into
+$$
+p(\theta|y^b) \approx \mathcal{N}(\theta^*, \hat{\Sigma}_{\theta}/b)
+$$
+such that the prior distribution for $\theta$ under both hypotheses are essentially equivalent and no hypothesis is favored by the prior.
+
+**A Bayesian approach to evidence synthesis**
+
+Per study, study-specific hypothesis sets can be constructed such that they translate the underlying theoretical expectations into sets that draw on the specific estimates used in each particular study. In a study employing a correlation design, this construct might have been measured through a single real-valued variable exerting one linear effect. A second study might have investigated the same construct using an experimental approach and various treatment and control groups, with thus a different operationalization.
+
+Given that in a set of $1, \dots, T$ studies Bayes factors $BF_{mu}$ are constructed for all substantive hypotheses under consideration, the cornerstone to the aggregation method is to compute the posterior model probabilities (PMPs) for each hypothesis within each study. These provide us with the key for evidence synthesis. In general, PMPs are computed using
+$$
+PMP_m = \frac{\pi_mBF_{mu}}{\sum_m\pi_mBF_{mu}},
+$$
+where $\pi_m$ constitutes an hypothesis' prior model probability (PrMP) and $BF_{mu}$ denote the Bayes factors for each hypothesis under consideration. Posterior model probabilities quantify the relative evidence for each hypothesis $H_m$ on a range from 0-1 and jointly sum up to 1. The degree of certainty that a hypothesis is the best out of the specified set is $PMP_m$. Additionally, PMPs can be used to calculate Bayesian error probabilities given the data and the underlying hypotheses. The error probability if a hypothesis $H_m$ is selected out of its set is $1 - PMP_m$.
+
+For a set of $T$ studies, evidence can be combined by setting the PrMP $\pi_{t,m}^0$ within Study $t$ equal to the PMP $\pi_{t,m}^1$ from Study $t - 1$. For the very first study, each hypothesis receives an equal PrMP of $\pi_{t=1,m}^0=1/M$, where $M$ is the number of all evaluated hypotheses (including the unconstrained $H_u$). Given that $\pi_{t,m}^0$ represenet prior probabilities, $\pi_{t,m}^1$ denote posterior probabilities for Hypothesis $H_m$ in Study $t$ and $\pi_{t,m}^0 = \pi_{t-1,m}^1$ for $t = 2, \dots, T$, all extracted Bayes factors $BF_{mu}^t$ can be combined into an overall evidence measure $\pi_{T,m}^1$ for every hypothesis using
+$$
+\pi_{T,m}^1 = \frac{\pi_{t,m}^0 BF_{mu}^t}{\sum_{t,m} \pi_{t,m}^0 BF_{mu}^t}
+$$
+for $t = 1, \dots, T$.
+
+**Monte Carlo Study**
+
+The performance of Bayesian Evidence Synthesis cannot be contrasted to conventional methods for evidence synthesis, since the focus is on situations in which these conventional methods are not applicable. Therefore, the evaluation of the method aims at showing that aggregated evidence is consistently rendered for those hypotheses that are *true*, or, if no true hypothesis is specified, for those that provide the closest representation of the underlying data generating process. If all substantive hypotheses approximate it poorly, then the BES performance well if the hypotheses are rejected and most support is rendered for the unconstrained hypothesis $H_u$. This is investigated by means of three separate Monte Carlo experiments. Within each experiment, evidence is combined from four artificial studies. The encompassing population that these draw sample data from is characterized by three latent parameters $\theta = [\theta_1, \theta_2, \theta_3]$ that we aim to make inferences on and their true relation is forced to be $\theta_1 > \theta_2 > \theta_3 > 0$. 
+
+**Hypothesis sets**
+
+Across all three experiments, the experimental conditions are separately examined for hypothesis sets that (i) consist only of inequality constraints and (ii) include equality constraints. In experiment 1, the performance of BES to correctly identify the true hypothesis given that the specified hypothesis set $H_m$ covers the whole parameter space is investigated. Here, $H_m$ focuses on one parameter of interest. To maximize the difficulty for BES, the focus will be on the smallest effect $\theta_3$ and most evidence is expected to be rendered for $H_1$. The first set $H_m^i$ consists of two directional hypotheses that differntiate between $\theta_3$ being positive or negative. The second set $H_m^e$ includes an equality constrained hypothesis that incorporates $H_0 = \theta_3 = 0$. In experiment 2, the performance for a set that merely investigates a subset of $\theta$ and does not entail a true substantive hypothesis is evaluated. The focus is on a multiple parameter case and explicitly add an unconstrained hypothesis $H_u$. If BES performs well, most evidence will be rendered for $H_3$. As in experiment 1, a separate hypothesis set where an equality constrained hypothesis is added is investigated. In experiment 2, the special case of a set that merely investigates a subset of $\theta$ and does not entail a true substantive hypothesis is evaluated. Thus, it is aimed to reject both substantive expectations that are poor representations of the underlying population structure and expected that most support will be rendered for the unconstrained hypothesis $H_u$.
+
+**Statistical models**
+
+Evidence from four GLMs is combined, mimicking four different studies that sample from a jointly underlying encompassing population. GLMs can be written as
+$$
+f(\hat{y}) = X\beta,
+$$
+where $\hat{y} = E(y)$ denotes the expectation of the dependent variable $y$ and $X\beta$ is the linear predictor with independent variables $X = [x_1, x_2, \dots, x_K]$ and model parameters $\beta = [\beta_1, \beta_2, \dots, \beta_K]$ for $k = 1, \dots, K$. $\beta = [\beta_1, \beta_2, \beta_3]$ are the estimates of $\theta = [\theta_1, \theta_2, \theta_3]$. In the simulations, two GLMs set $f(\hat{y}) = y$ (the identity link) and estimate linear regressions. One GLM sets $f(\hat{y}) = log \Big{(}\frac{\hat{y}}{1 - \hat{y}} \Big{)}$ and builds a logistic regression model. The final model estimates probit regression and sets $f(\hat{y}) = \Phi^{-1} \hat{y}$.
+
+**Experimental conditions**
+
+In each experiment, a full factorial $3 \times 2 \times 19$ design is used. The following factors vary:
+
+- The overall $R^2$ by which the latent parameters $\theta$ are related to the outcome variable in the encompassing population. Small ($R^2 = 0.02$), medium ($R^2 = 0.15$) and large ($R^2 = 0.25$) are used. The individual shares on the $R^2$ are distributed equally over all three latent parameters.
+- The ratios between the latent factors in the encompassing population. Once, the true parameters take on ratios $2:1$ implying that $\theta_1 = 2(\theta_2) = 4(\theta_3)$. In a second set, the ratio is set to $1.33:1$ resulting in $\theta_1 = 1.33(\theta_2) = 1.77(\theta_3)$.
+- The sample size which each individual study takes on. This is varied between $n = 50$ and $n = 500$ in increments of $n = 25$. For reasons of simplicity, every individual study takes on the same sample size.
+
+## The Bayesian New Statistics
+
+***Hypothesis testing, estimation, meta-analysis, and power analysis from a Bayesian perspective***
+
+**@kruschke_bayesian_2018**
+
+There are many reasons to eschew NHST, with its seductive lapse to black-and-white thinking about the presence or abscence of effects. There are also many reasons to promote instead a cumulative science that incrementally improves estimates of magnitudes and uncertainty.
+
+A core premise of meta-analytic thinking is that "Any one study is most likely contributing rather than determining; it needs to be considered alongside any comparable past studies and with the assumption that future studies will build on its contribution" [@cumming_new_2014, p. 23].
+
+# Ideas for current study
+
+@. Link the approach to triangulation - different ways of analyzing the same problem warrant that there are methods that can be used to aggregate the results.
+@. Replication alone is not enough, if a method is biased (say, the method used yields measurement error), then replicating the study with yield another biased result. Only by using multiple ways of investigating the same underlying research question, it is possible to satisfactorily settle the conclusion.
+@. Compare BES to meta-analysis in a situation in which this is possible (four studies that use linear models / GLMs) (not to prove that the method can outperform meta-analysis, but to show that in similar circumstances, it yields results that are as valid as conventional methods).
+@. Multi-level modelling (completely in line with Vincent & Werner) (or other more complex models). Eventually, it would be really cool to evaluate structural equation models. Although I do not know the possibilities of calculating Bayes Factors for structural equation models, I feel that especially in SEM, comparison of models/hypotheses by means of Bayes factors would be extremely suitable.
+@. More sets of hypotheses. I think that it is quite likely that a researcher wants to evaluate several theory-based hypotheses that are highly competitive / differ only very minimally.
+@. Hypotheses that are tested in one study, but not completely in another study.
+@. Multiple hypotheses of interest, but one of these is not investigated in at least one of the studies.
+@. Evaluation by means of out of sample predictions.
+@. Evaluate and use power calculations (to show the disastrous effect (?) of underpowered studies).
+@. Extend it to a combination of frequentist as well as Bayesian methods (possibly Gibbs sampling of the regression coefficients and the OLS estimates).
+@. We could extend the simulation set up to probably more realistic settings with a more complicated model, eventually use predictors that are set to be not measured in the sample (which is a nice link to the example of using BES when not all hypotheses are tested in multiple studies).
+@. Evaluate the situation in which only one of the predictors is in the set, but differing (numbers of) covariates are used in all studies.
+@. Add interaction effects.
+
+.. Ik vind het toch altijd wel een beetje pijnlijk dat je in zoveel literatuur over Bayes Factors ook direct de thresholds tegenkomt die laten zien hoe je ze moet interpreteren (3 - 20 positive; 20 - 150 strong) ..
+
+
+CHECK / ASSESS FISCHERS METHOD & HARMONIC MEAN P-VALUE
+
+
+
+# Methods
+
+# Results
+
+# Conclusion
+
+# Reference list
+
