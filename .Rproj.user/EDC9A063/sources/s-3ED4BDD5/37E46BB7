@@ -3,7 +3,7 @@
     "path": "~/Documents/bes_master_thesis_ms/manuscript/manuscript_volker.Rmd",
     "project_path": "manuscript/manuscript_volker.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "2685340931",
     "contents": "",
     "dirty": false,
     "created": 1651664955671.0,
@@ -12,15 +12,16 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "1,120",
-        "scrollLine": "0"
+        "cursorPosition": "612,83",
+        "scrollLine": "604",
+        "last_setup_crc32": ""
     },
     "folds": "",
-    "lastKnownWriteTime": 1651669241,
+    "lastKnownWriteTime": 1652627345,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1651669241675,
+    "last_content_update": 1652627345224,
     "read_only": false,
     "read_only_alternatives": []
 }
