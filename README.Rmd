@@ -28,6 +28,19 @@ The archive is stored on [GitHub](https://github.com/thomvolker/bes_master_thesi
 
 # Machine and package info
 
+```{r, include=F}
+library(tidyverse)
+library(magrittr)
+library(furrr)
+library(BFpack)
+library(Rcpp)
+library(RcppArmadillo)
+# devtools::build("DataCpp")
+# devtools::install("DataCpp")
+library(DataCpp)
+```
+
+
 ```{r, echo=F, comment=NA}
 sessioninfo::session_info()
 ```
