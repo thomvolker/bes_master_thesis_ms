@@ -15,7 +15,7 @@ library(RcppArmadillo)
 # devtools::install("DataCpp")
 library(DataCpp)
 
-source("simulations/functions.R")
+source("scripts/functions.R")
 
 ################################################################################
 ## Specify parallel functionality and seed
@@ -89,21 +89,21 @@ coefs(0.25, ratio_beta, cormat(pcor, length(ratio_beta)), "probit")
 ## Run simulation scripts - simulation set 1
 ################################################################################
 
-plan(multisession); source("simulations/01_sample_size_equal.R", echo = FALSE)
+plan(multisession); source("scripts/01_sample_size_equal.R", echo = FALSE)
 rm(list = c("output"))
-plan(multisession); source("simulations/02_sample_size_underpowered.R", echo = FALSE)
+plan(multisession); source("scripts/02_sample_size_underpowered.R", echo = FALSE)
 rm(list = c("output", "n_initial", "n25"))
-plan(multisession); source("simulations/03_dummied_variable_cont.R", echo = FALSE)
+plan(multisession); source("scripts/03_dummied_variable_cont.R", echo = FALSE)
 rm(list = c("output"))
-plan(multisession); source("simulations/04_dummied_variable_cat.R", echo = FALSE)
+plan(multisession); source("scripts/04_dummied_variable_cat.R", echo = FALSE)
 rm(list = c("output"))
-plan(multisession); source("simulations/05_combined_variable_mean.R", echo = FALSE)
+plan(multisession); source("scripts/05_combined_variable_mean.R", echo = FALSE)
 rm(list = c("output"))
-plan(multisession); source("simulations/06_separated_variables.R", echo = FALSE)
+plan(multisession); source("scripts/06_separated_variables.R", echo = FALSE)
 rm(list = c("output"))
-plan(multisession); source("simulations/07_separated_variables_3wrong.R", echo = FALSE)
+plan(multisession); source("scripts/07_separated_variables_3wrong.R", echo = FALSE)
 rm(list = c("output"))
-plan(multisession); source("simulations/08_separated_variables_0included.R", echo = FALSE)
+plan(multisession); source("scripts/08_separated_variables_0included.R", echo = FALSE)
 rm(list = c("output"))
 
 
@@ -117,23 +117,23 @@ n      <- c(25, 200)
 r2     <- 0.09
 models <- c("normal", "logit", "probit")
 
-plan(multisession); source("simulations/09_Hu_Hc_1pred.R", echo = FALSE)
+plan(multisession); source("scripts/09_Hu_Hc_1pred.R", echo = FALSE)
 rm(list = c("output"))
 
 models <- "normal"
 
-plan(multisession); source("simulations/10_Hu_Hc_1pred_wrong.R", echo = FALSE)
+plan(multisession); source("scripts/10_Hu_Hc_1pred_wrong.R", echo = FALSE)
 rm(list = c("output"))
 
-plan(multisession); source("simulations/11_Hu_Hc_3preds.R", echo = FALSE)
+plan(multisession); source("scripts/11_Hu_Hc_3preds.R", echo = FALSE)
 rm(list = c("output"))
 
-plan(multisession); source("simulations/12_Hu_Hc_3preds_wrong.R", echo = FALSE)
+plan(multisession); source("scripts/12_Hu_Hc_3preds_wrong.R", echo = FALSE)
 rm(list = c("output"))
 
-plan(multisession); source("simulations/13_Hu_Hc_3preds_separated.R", echo = FALSE)
+plan(multisession); source("scripts/13_Hu_Hc_3preds_separated.R", echo = FALSE)
 rm(list = c("output"))
 
-plan(multisession); source("simulations/14_Hu_Hc_3preds_separated_wrong.R", echo = FALSE)
+plan(multisession); source("scripts/14_Hu_Hc_3preds_separated_wrong.R", echo = FALSE)
 rm(list = c("output"))
 
