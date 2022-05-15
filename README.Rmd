@@ -28,7 +28,7 @@ The archive is stored on [GitHub](https://github.com/thomvolker/bes_master_thesi
 
 # Machine and package info
 
-```{r}
+```{r, echo=F, comment=NA}
 sessioninfo::session_info()
 ```
 
