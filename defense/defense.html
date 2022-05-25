@@ -67,11 +67,11 @@ Allows to aggregate heterogeneous sources of evidence.
 
 .pull-left[
 
-- By combining support for hypotheses rather than parameter estimates.
+- By combining support for hypotheses rather than parameter estimates;
 
 &lt;br&gt;
 
-- Bayes factors / posterior model probabilities as measures of evidence.
+- and using Bayes factors / posterior model probabilities as measures of support.
 
 ]
 
@@ -85,23 +85,24 @@ Allows to aggregate heterogeneous sources of evidence.
 ???
 
 Bayesian Evidence Synthesis provides a solution to this problem, by shifting the focus from pooling parameter estimates to focusing on hypothesis evaluation.
-In each study, the support for the overarching theory can be expressed using a Bayes factor.
-These Bayes factors can be combined sequentially to otbain the aggregated support over studies for the overarching theory, as shown in this figure. 
+In each study, the support for the overarching theory can be expressed using a Bayes factor, which balances the fit of a hypothesis to the data with the complexity of the hypothesis.
+As conceptually shown in this figure, the obtained Bayes factors can be combined sequentially to obtain the aggregated support over studies for the overarching theory. 
 
 
 ---
 
 # Investigating Bayesian Evidence Synthesis
 
-To what extent affect the complexity of the hypothesis of interest and the choice of alternative hypothesis the performance of Bayesian Evidence Synthesis?
+To what extent do the complexity of the hypothesis of interest and the choice of alternative hypothesis affect the performance of Bayesian Evidence Synthesis?
 
 &lt;img src="defense_files/figure-html/unnamed-chunk-3-1.png" width="90%" /&gt;
 
 ???
 
 To provide guidelines on the applicability of Bayesian Evidence Synthesis in realistic settings, we conducted a simulation study. 
-We assessed to what extent the complexity of the hypothesis of interest and the choice of alternative hypothesis affects the performance of Bayesian Evidence Synthesis under varying amounts of statistical power. 
-Complexity reflects how restrictive a hypothesis is with respect to admissible parameter values, and a larger complexity allows for more parameter values than a smaller complexity.
+We assessed to what extent the complexity of the hypothesis of interest and the choice of alternative hypothesis affect the performance of Bayesian Evidence Synthesis under varying amounts of statistical power. 
+Complexity reflects how restrictive a hypothesis is with respect to admissible parameter values.
+A larger complexity, here in the upper left figure, allows for a broader range of parameter values than a smaller complexity in the lower left figure. 
 We compared the hypothesis of interest against an unconstrained hypothesis, allowing the model parameters to take any value, and a complement hypothesis, allowing the model to take parameter values outside the constraints of the hypothesis of interest. 
 
 ---
@@ -114,7 +115,7 @@ We compared the hypothesis of interest against an unconstrained hypothesis, allo
 
 
 Our simulations showed that under sufficient power, Bayesian Evidence Synthesis performs adequately. 
-Regardless of the complexity of the hypothesis of interest and the alternative, the support for the correct hypothesis increases as more studies are added, as indicated by the orange lines above zero, indicating increasing support for the true hypothesis when more studies are added. 
+Regardless of the complexity of the hypothesis of interest and the alternative, the support for the support for the correct hypothesis increases as more studies are added, as indicated by the orange lines above zero, indicating increasing support for the true hypothesis, shown on the y-axis, when more studies are added, shown on the x-axis. 
 
 
 Things get interesting when the studies have insufficient statistical power.
@@ -125,7 +126,8 @@ When the hypothesis of interest has the same complexity as its complement, suppo
 
 In the lower figures, the hypothesis of interest constrains multiple parameters simultaneously, resulting in a smaller complexity.
 Here, regardless of the alternative hypothesis, the support for the hypothesis of interest decreases with the number of studies, as shown by the blue lines. 
-Constraining multiple parameters simultaneously under little power results in estimates that vary considerably, such that at least one of the constraints is generally violated. 
+Under little statistical power, estimates vary considerably. 
+When constraining multiple parameters simultaneously, at least one of the constraints is often violated, resulting in a relatively poorly fitting hypothesis.
 Even if a different constraint is violated in each study, the aggregated support will favor both alternative hypotheses.
 
 Hence, if studies lack statistical power, the performance of Bayesian Evidence Synthesis decreases, especially when evaluating against the unconstrained hypothesis, or when addressing multiple parameters simultaneously.
