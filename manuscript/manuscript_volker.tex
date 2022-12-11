@@ -81,57 +81,19 @@
 \begin{document}
 
 
-\thispagestyle{empty}
-
-\begin{large}
-\noindent Research Master's programme 
-Methodology and Statistics for the Behavioural, Biomedical and Social Sciences \newline
-Utrecht University, the Netherlands \newline
-\newline
-\newline
-\newline
-\newline
-MSc Thesis Thom Benjamin Volker (5868777) 
-\newline
-TITLE: "Combining support for hypotheses over heterogeneous studies with Bayesian Evidence Synthesis: A simulation study" 
-\newline
-May 2022 
-\newline
-\newline
-\newline
-\newline
-\newline
-Supervisor:\newline
-Prof. Dr. Irene Klugkist \newline
-\newline
-\newline
-Second grader: \newline
-Prof. Dr. Ir. Bernard Veldkamp
-\newline
-\newline
-\newline
-\newline
-Preferred journal of publication: Journal of Mathematical Psychology 
-\newline
-Word count: 9465
-\newline
-\end{large}
-\addtocounter{page}{-1}
-\clearpage
-\pagebreak
-
-
 \begin{frontmatter}
 
   \title{Combining support for hypotheses over heterogeneous studies with Bayesian Evidence Synthesis: A simulation study}
     \author[Utrecht University]{Thom Benjamin Volker%
   \corref{cor1}%
-  \fnref{1}}
+  \fnref{a,b}}
    \ead{t.b.volker@uu.nl} 
+    \author[Utrecht University]{Irene Klugkist}
+   \ead{i.klugkist@uu.nl} 
       \affiliation[Utrecht University]{Department of Methodology and Statistics, Padualaan 14, Utrecht}
     \cortext[cor1]{Corresponding author}
-    \fntext[1]{I gratefully acknowledge stimulating discussions with Prof.~Dr.~Ir. Vincent Buskens and Prof.~Dr.~Werner Raub.}
-    \fntext[2]{FETC of Utrecht University granted ethical approval for this work.}
+    \fntext[a]{We gratefully acknowledge stimulating discussions with Prof.~Dr.~Ir. Vincent Buskens and Prof.~Dr.~Werner Raub.}
+    \fntext[b]{FERB of Utrecht University granted ethical approval for this work (case nr. 20-0116).}
   
   \begin{abstract}
   Scientific claims gain credibility by replicability, especially if replication under different circumstances and varying designs yields equivalent results. Aggregating results over multiple studies is, however, not straightforward, and when the heterogeneity between studies increases, conventional methods as (Bayesian) meta-analysis and Bayesian sequential updating become infeasible. \emph{Bayesian Evidence Synthesis}, built upon the foundations of the Bayes factor, allows to aggregate the support for conceptually similar hypotheses over studies, regardless of methodological differences. We assess the performance of Bayesian Evidence Synthesis over multiple effect and sample sizes, with a broad set of (inequality-constrained) hypotheses using Monte Carlo simulations, focusing explicitly on the complexity of the hypotheses under consideration. The simulations show that this method can evaluate complex (informative) hypotheses regardless of methodological differences between studies, and performs adequately if the set of studies considered has sufficient statistical power. Additionally, we pinpoint challenging conditions that can lead to unsatisfactory results, and provide suggestions on how to handle these situations.
@@ -145,6 +107,11 @@ Word count: 9465
 
 \widowpenalty10000
 \clubpenalty10000
+
+\hypertarget{highlights}{%
+\section{Highlights}\label{highlights}}
+
+TO ADD
 
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
@@ -165,22 +132,22 @@ If the results of the studies depend on methodological flaws, inferences from al
 
 \emph{Conceptual} replications protect against placing too much confidence in findings that depend on methodological shortcomings.
 A conceptual replication primarily assesses the validity and generalizability of a study, by testing whether similar results can be obtained under different circumstances, or using different methods and operationalizations \citep{nosek_scientific_2012}.
-The idea is that a phenomenon that can be observed in a variety of research settings is more likely to represent a \emph{true} effect than a finding that replicates only in particular circumstances \citep{crandall_conceptual_2016}.
+The rationale is that a phenomenon that can be observed in a variety of research settings is more likely to represent a \emph{true} effect than a finding that replicates only in particular circumstances \citep{crandall_conceptual_2016}.
 Additionally, different methodologies used in different studies may have different strengths and weaknesses, that may all affect the conclusions drawn from the data.
 Combining evidence from multiple approaches mitigates the effect of these strengths and weaknesses, and thereby enhances the validity and the robustness of the final conclusion \citep{lawlor_triangulation_2017, lipton2003inference, mathison1988triangulate, munafo_robust_2018, nosek_scientific_2012}.
 
-In the conventional framework of direct replications, combining evidence over studies is relatively straightforward, because established methods as (Bayesian) meta-analysis or Bayesian sequential updating can be applied to aggregate the results \citep{lipsey_wilson_2001, schonbrodt_sequential_2017, sutton_bayesian_meta2001}.
+In the conventional framework of direct replications, combining evidence over studies is relatively straightforward, because established methods as (Bayesian) meta-analysis \citep{lipsey_wilson_2001, sutton_bayesian_meta2001} or Bayesian sequential updating \citep{schonbrodt_sequential_2017} can be applied to aggregate the results.
 These methods pool the parameter estimates or effect sizes obtained in the individual studies \citep{cooper_handbook_2009}.
 Even if the studies are not identical, but still considerably similar in terms of study design and analysis methods, meta-analysis can be used, and moderators can be added to explain variability in the estimated effects.
 However, if the studies differ considerably with regard to research design, operationalizations of key variables or statistical models used, the parameter estimates or effect sizes will not be comparable.
-Consequently, an aggregate of these estimates cannot be meaningfully interpreted, which renders the use of such conventional approaches unfeasible.
+Consequently, an aggregate of these estimates cannot be meaningfully interpreted, which renders the use of such conventional approaches infeasible.
 This problem complicates the quantification of the evidence for a scientific claim over multiple studies that, although conceptually similar, differ methodologically.
 
 To overcome this problem, \citet{kuiper_combining_2013} proposed a new method called \emph{Bayesian Evidence Synthesis} (\emph{BES}).
 At its core, \emph{BES} quantifies the support for a scientific theory or an overarching hypothesis by aggregating Bayes factors obtained in individual studies.
-In every single study, a statistical hypothesis can be formulated that reflects the overall theory, but that incorporates data characteristics and research methodology unique to that study.
+In every single study, a statistical hypothesis can be formulated that reflects the overall theory, but that accounts for characteristics of the data and research methodology unique to that study.
 The support for each study-specific hypothesis can be expressed using a Bayes factor (\(BF\)), rendering the relative support for the hypothesis of interest over an alternative hypothesis \citep{kass_raftery_bayes_factors_1995}.
-If the study-specific hypotheses represent the same underlying (i.e., latent) effect, the Bayes factors on these hypotheses can be meaningfully combined.
+If the study-specific hypotheses represent the same underlying (i.e., latent) effect, the resulting Bayes factors can be meaningfully combined.
 After all, each individual study provides a certain amount of evidence for or against the overarching theory.
 The evidence in each study can be aggregated into a single measure that reflects the support for the theory over all studies combined.
 
@@ -189,15 +156,15 @@ In contrast to the classical null hypothesis testing paradigm, Bayesian hypothes
 Moreover, the Bayesian framework allows to quantify the amount of evidence from the data for or against the hypothesis of interest, rather than merely assessing whether the classical null hypothesis can be rejected \citep{Wagenmakers_bayesian_2018}.
 Yet, although the theoretical foundations of \emph{BES} have been laid out by \citet{kuiper_combining_2013}, and the method has been applied successfully in substantive research \citep[e.g.,][]{kevenaar_bes_2021, zondervan_parental_2019, zondervan_robust_2020, volker_cooperation_2022}, methodological research on Bayesian evaluation of hypotheses has hardly been extended to the case in which evidence is combined over multiple studies.
 It is not obvious how research on Bayes hypothesis evaluation within studies translates to the situation in which evidence is combined over multiple studies.
-As a consequence, the necessary conditions for adequate performance of \emph{BES} should receive further scrutiny.
+As a consequence, the required conditions for adequate performance of \emph{BES} are unknown.
 
 In this paper, we assess the performance of \emph{BES} in various scenarios relevant to applied researchers.
-In multiple simulations, we apply \emph{BES} to aggregate the evidence for conceptually similar hypotheses that are evaluated using different statistical models, while varying the operationalizations of key variables concerned by the hypothesis.
+In multiple simulations, we apply \emph{BES} to aggregate the evidence for conceptually similar hypotheses that are evaluated using different statistical models, while varying the operationalizations of key variables in these hypotheses.
 We restrict the simulations to the evaluation of regression coefficients in three members of the generalized linear model family: ordinary least squares (OLS), logistic and probit regression, because of their widespread appearance in empirical research.
 Note, however, that the applicability of \emph{BES} reaches beyond these methods: as long as a conceptually similar hypothesis on the parameters of the models can be evaluated using Bayes factors, \emph{BES} can be used to aggregate the results.
 Yet, exactly this flexibility may pose challenges to the application of \emph{BES}.
 Different operationalizations of key variables affect the complexities of the hypotheses evaluated in the individual studies.
-Consequently, the Bayes factors within these studies are affected by the complexities of the hypotheses, such that the resulting amount of evidence may largely depend on the specification of the hypotheses, rather than on their veracity.
+The Bayes factors within these studies are calculated using the complexities of the hypotheses, such that the resulting amount of evidence may largely depend on the specification of the hypotheses, rather than on their veracity.
 Our simulations assess how common procedures in data handling affect the complexities of the hypotheses and the resulting performance of \emph{BES}.
 Additionally, we investigate in which situations \emph{BES} does not perform adequately, and provide suggestions on how such situations can be handled.
 Yet, before discussing the simulations, a detailed description of \emph{BES} tailored to the specification of the simulation study is provided.
@@ -210,15 +177,15 @@ Using \emph{BES} to quantify the evidence for a scientific theory requires three
 First, \emph{BES} requires multiple studies on the same phenomenon, that all assess a conceptually similar hypothesis \citep{kuiper_combining_2013}.
 Hence, in each study, a hypothesis must be formulated that reflects this scientific theory, but that also accounts for the specifics of the study, such as the empirical design, the analysis model and operationalizations of key variables.
 Second, these hypotheses are evaluated in each study separately.
-In the Bayesian framework, this is done by estimating the posterior distribution of the parameters of the model, after which the fit of the model to the hypothesis is quantified using a Bayes factor.
-Third, the support for the theory in each individual study is aggregated using an updating procedure, that renders the support for the theory over all studies combined.
-Each of these steps are outlined in more detail in the current section.
+In the Bayesian framework, this can be done by calculating the Bayes factor for an hypothesis over an alternative hypothesis, using the posterior distribution of the model parameters.\\
+Third, the support for the theory in each individual study is aggregated using an updating procedure that renders the support for the theory over all studies combined.
+Each step is outlined in more detail in this section.
 
 \hypertarget{informative-hypotheses}{%
 \subsection{Informative hypotheses}\label{informative-hypotheses}}
 
 When translating a conceptual hypothesis (i.e., the scientific theory) to a statistical hypothesis, researchers conventionally relied on the null hypothesis testing framework.
-In the context of regression models, this generally implies that researchers evaluate the null hypothesis, \(H_0\), stating that the regression coefficients \(\beta_k\) (where \(k\) is an indicator) equal zero, against an unconstrained alternative hypothesis, \(H_u\), indicating that they can have any value.
+In the context of regression models, this generally implies that researchers evaluate the null hypothesis, \(H_0\), stating that the regression coefficients \(\beta_k\) (where \(k\) is an index) equal zero, against an unconstrained alternative hypothesis, \(H_u\), indicating that they can have any value.
 Several authors emphasized shortcomings of this approach, remarking that the ability to reject a null hypothesis is hardly illuminating, because the null is seldom (exactly) true \citep{cohen_earth_1994, lykken_wrong_1991} and rarely corresponds to the expectations researchers have \citep{cohen_things_i_learned_1990, vandeschoot_informative_2011, royall1997statistical, trafimow_manipulating_2018}.
 Multiple researchers argued that scientific expectations can be better captured in an informative hypothesis \citep{hoijtink_informative_2012, vandeschoot_informative_2011}.
 
@@ -242,21 +209,22 @@ The flexibility with regard to specifying hypotheses is especially advantageous 
 
 Within the Bayesian framework, the support for (informative) hypotheses can be expressed in terms of a Bayes factor \citep{kass_raftery_bayes_factors_1995}.
 Bayes factors require that a likelihood function (i.e., an analysis model for the data) is combined with a prior distribution, resulting in the posterior distribution of the parameters.
-The prior and posterior distribution can subsequently be used to calculate the Bayes factor, which quantifies the relative support for a hypothesis over some alternative.
+The prior and posterior distribution can subsequently be used to calculate the Bayes factor.
 
 \hypertarget{likelihood-of-the-parameters}{%
 \subsubsection{Likelihood of the parameters}\label{likelihood-of-the-parameters}}
 
-After formulating the hypotheses of interest, researchers need to specify a statistical model (i.e., a likelihood function) that is compatible with these hypotheses and that can be used to analyse the data \citep{lynch_introduction_2007}.
+After formulating the hypotheses of interest, researchers need to specify a statistical model (i.e., a likelihood function) that allows to evaluate these hypotheses when analyzing the data \citep{lynch_introduction_2007}.
 A likelihood function quantifies the support in the data for each potential parameter value.
-This paper solely focuses on OLS, logistic and probit regression, which are all part of the generalized linear model (GLM) family (note that there are many other models that fall under the GLM family).
-GLMs extend the linear regression model to deal with response variables that are assumed to follow an exponential distribution, by using a link function \(g(\boldsymbol{\mu}) = X\beta\), with \(X\) an \(n \times p\) matrix containing \(n\) observations' scores on \(p\) predictor variables, \(\beta\) is a \(p \times 1\) vector containing the regression coefficients, and \(\boldsymbol{\mu} = E(Y|X)\), where \(Y\) is an \(n \times 1\) vector with response values.
+This paper is restricted to OLS, logistic and probit regression, which are all part of the generalized linear model (GLM) family (note that there are many other models that fall under the GLM family).
+GLMs extend the linear regression model to deal with response variables that are assumed to follow a distribution from the exponential family.
+This is done by using a link function \(g(\boldsymbol{\mu}) = X\beta\), where \(X\) is an \(n \times p\) matrix containing \(n\) observations' scores on \(p\) predictor variables, \(\beta\) is a \(p \times 1\) vector containing the regression coefficients, and \(\boldsymbol{\mu} = E(Y|X)\), where \(Y\) is an \(n \times 1\) vector with response values.
 The purpose of the link function is to model each observation's expected response \(E(Y|X)\) in terms of a linear combination of the predictor variables.
 Accordingly, the likelihood of the parameters given the data under the generalized linear model is formalized as
 \[
 L(\beta, \phi|Y, X) \equiv f(Y|X, \beta, \phi) = \prod^n_{i=1} f(Y_i|X_i \beta, \phi),
 \]
-where \(i\) is an indicator for each individual observation and \(\phi\) denotes the variance or dispersion parameter.
+where \(i\) indexes each observation and \(\phi\) denotes the variance or dispersion parameter.
 
 One of the best known models in the class of GLMs is the linear regression model, which uses the identity link function, such that \(g(\boldsymbol{\mu}) = \boldsymbol{\mu} = X\beta\).
 The likelihood function of the linear regression model is defined by
@@ -272,7 +240,7 @@ The corresponding likelihood is defined by
 \[
 f(Y|X, \beta) = \prod^n_{i=1} p_i^{Y_i} (1 - p_i)^{1 - Y_i},
 \]
-where \(Y_i\) is either \(0\) or \(1\), and \(p_i\) is specified according to the logit link \(g(\boldsymbol{\mu}) = \text{ln}\Big(\frac{\boldsymbol{\mu}}{1 - \boldsymbol{\mu}}\Big) = X\beta\) for logistic regression, or probit link \(g(\boldsymbol{\mu}) = \Phi^{-1}(\boldsymbol{\mu}) = X\beta\), where \(\Phi^{-1}\) is the inverse cumulative standard normal distribution, for probit regression models.
+where \(Y_i\) is either \(0\) or \(1\), and \(p_i\) is specified according to the logit link \(g(\boldsymbol{\mu}) = \text{ln}\Big(\frac{\boldsymbol{\mu}}{1 - \boldsymbol{\mu}}\Big) = X\beta\) for logistic regression, or probit link \(g(\boldsymbol{\mu}) = \Phi^{-1}(\boldsymbol{\mu}) = X\beta\), where \(\Phi^{-1}\) denotes the inverse of the cumulative distribution function of the standard normal distribution, for probit regression models.
 The dispersion parameter is omitted because it equals \(\phi = 1\) for logistic and probit models.
 
 \hypertarget{prior-distribution}{%
@@ -280,10 +248,10 @@ The dispersion parameter is omitted because it equals \(\phi = 1\) for logistic 
 
 After specifying the analysis model, the prior distribution for the model parameters must be defined.
 Because the prior for an informative hypothesis can be obtained by truncating the unconstrained (or encompassing) prior \citep[e.g.,][]{klugkist_inequality_2005}, we first discuss the latter.
-The prior distribution reflects which parameter values are most likely before observing the data, and hence may be more or less informative depending on the amount of prior knowledge researchers have.
+The prior distribution reflects which parameter values are most likely before observing the data, and hence may be more or less informative depending on the amount of prior knowledge researchers possess.
 Although researchers have substantial freedom in specifying the prior distribution, inadequate choices have adverse consequences for hypothesis evaluation and comparison, rendering it a complicated task \citep{ohagan_fractional_1995}.
 A practical solution to the specification of the prior for hypothesis evaluation, is to use a fractional unconstrained prior \citep{ohagan_fractional_1995} that protects against a subjective specification \citep{gu_approximated_2018}.
-This approach entails that a non-informative improper prior is updated with a small fraction \(b\) of the information in the data (i.e., the likelihood), resulting in a proper default prior distribution \citep[e.g.,][]{mulder_equality_2010, gu_approximated_2018}, such that
+This approach entails that a non-informative improper prior \(p_u(\beta, \phi)\) is updated with a small fraction \(b\) of the information in the data (i.e., the likelihood), resulting in a proper default prior distribution \citep[e.g.,][]{mulder_equality_2010, gu_approximated_2018}, such that
 \[
 p_u(\beta, \phi|Y, X, b) = 
 \frac{
@@ -292,7 +260,7 @@ p_u(\beta, \phi|Y, X, b) =
   \int \int p_u(\beta, \phi) ~ f(Y|X, \beta, \phi)_b ~ \partial \beta \partial \phi
 }.
 \]
-\citet{mulder_olssoncollentine_2019} proved that, under the linear model, updating a noninformative improper Jeffrey's prior with a fraction \(b = \frac{p+1}{n}\) of the likelihood renders a Student \(\mathcal{T}\) prior distribution with 1 degree of freedom (i.e., a Cauchy distribution) for the regression coefficients,
+\citet{mulder_olssoncollentine_2019} proved that, under the linear model, updating a noninformative improper Jeffrey's prior with a fraction \(b = \frac{p+1}{n}\) of the likelihood renders a Cauchy distribution (i.e., a Student \(\mathcal{T}\) prior distribution with 1 degree of freedom) for the regression coefficients,
 \[
 p_u(\beta | Y, X, b) = \mathcal{T}(\hat{\beta}, \Sigma_\beta / b, 1),
 \]
@@ -309,8 +277,8 @@ with mean vector \(\hat{\beta}\) and covariance matrix \(\Sigma_{\beta}/b\) (the
 Under this approach \(J\) typically equals the number of independent constraints in all hypotheses of interest within a study, although different specifications are possible \citep[for an elaborate discussion on appropriate values for \(J\), see][]{gu_approximated_2018, hoijtink_prior_2021}.
 
 After specifying a prior for the unconstrained hypothesis, the encompassing prior approach can be used to obtain a prior for an informative hypothesis by truncating the unconstrained prior \citep[e.g.,][]{klugkist_inequality_2005, mulder_equality_2010, mulder_prior_2014}.
-Accordingly, the prior for an informative hypothesis is proportional to the region of the prior that is in agreement with the constraints imposed by the hypothesis under consideration.
-That is, \(p_i(\beta | Y, X, b) \propto p_u(\beta | Y, X, b)\boldsymbol{1}_{\boldsymbol{B_i}}\), where \(\boldsymbol{1}_{\boldsymbol{B_i}}\) is an indicator for the admissible parameter space under hypothesis \(H_i\) \citep{gu_approximated_2018}.
+The prior for an informative hypothesis is proportional to the region of the prior that is in agreement with the constraints imposed by the hypothesis under consideration.
+That is, \(p_i(\beta | Y, X, b) \propto p_u(\beta | Y, X, b)1_{B_i}\), where \(1_{B_i}\) is an indicator for the admissible parameter space under hypothesis \(H_i\) \citep{gu_approximated_2018}.
 
 \hypertarget{posterior-distribution}{%
 \subsubsection{Posterior distribution}\label{posterior-distribution}}
@@ -341,7 +309,7 @@ P_u(\beta | Y, X) \approx \mathcal{N}(\hat{\beta}, \Sigma_\beta),
 with posterior mean vector \(\hat{\beta}\), and posterior covariance matrix \(\Sigma_\beta\).
 Because a truncated prior distribution under an informative hypothesis yields a density that is equal to zero at the truncated part of the distribution, and the likelihood function is unaffected by the hypothesis, the posterior distribution under an informative hypothesis also yields a truncated version of the unconstrained posterior.
 That is, the posterior distribution under hypothesis \(H_i\) yields
-\(P_i(\beta | Y, X) \propto P_i(\beta | Y, X)\boldsymbol{1}_{\boldsymbol{B_i}}\), where \(\boldsymbol{1}_{\boldsymbol{B_i}}\) indicates the region of the parameter space in line with hypothesis \(H_i\).
+\(P_i(\beta | Y, X) \propto P_i(\beta | Y, X)1_{B_i}\).
 
 \hypertarget{bayes-factors}{%
 \subsubsection{Bayes factors}\label{bayes-factors}}
@@ -356,14 +324,14 @@ The marginal likelihood of hypothesis \(H_i\) is defined as
 \[
 \begin{aligned}
 m(Y | X, H_i) 
-&= \int \int_{\beta \in \boldsymbol{B_i}}  P_i(\beta, \phi | Y, X) ~ \partial \beta ~ \partial \phi \\
-&= \int \int_{\beta \in \boldsymbol{B_i}} f(Y | X, \beta, \phi) ~ p_i(\beta, \phi | Y, X) ~ \partial \beta ~ \partial \phi,
+&= \int \int_{\beta \in B_i}  P_i(\beta, \phi | Y, X) ~ \partial \beta ~ \partial \phi \\
+&= \int \int_{\beta \in B_i} f(Y | X, \beta, \phi) ~ p_i(\beta, \phi | Y, X) ~ \partial \beta ~ \partial \phi,
 \end{aligned}
 \]
 which, when using the fractional prior and posterior, yields
 \[
 m(Y | X, H_i) = 
-  \int \int_{\beta \in \boldsymbol{B_i}}  f(Y | X, \beta, \phi)_{1-b} ~ p_i(\beta, \phi | Y, X, b) ~ \partial \beta ~ \partial \phi.
+  \int \int_{\beta \in B_i}  f(Y | X, \beta, \phi)_{1-b} ~ p_i(\beta, \phi | Y, X, b) ~ \partial \beta ~ \partial \phi.
 \]
 Whereas, in general, obtaining the marginal distribution is a complicated endeavor, the encompassing prior approach greatly simplifies this task \citep{klugkist_inequality_2005}.
 In fact, \citet{gu_approximated_2018} showed that when comparing an informative hypothesis \(H_i\) with an unconstrained hypothesis \(H_u\), the ratio of the two marginal likelihoods boils down to
@@ -371,20 +339,20 @@ In fact, \citet{gu_approximated_2018} showed that when comparing an informative 
 \begin{aligned}
 BF_{iu} &= 
 \frac{
-  \int \int_{\beta \in \boldsymbol{B_i}} f (Y | X, \beta, \phi)_{1-b} ~ p_i(\beta, \phi | Y, X, b) \partial \beta ~ \partial \phi
+  \int \int_{\beta \in B_i} f (Y | X, \beta, \phi)_{1-b} ~ p_i(\beta, \phi | Y, X, b) \partial \beta ~ \partial \phi
 }{
   \int \int f(Y | X, \beta, \phi)_{1-b} ~ p_u(\beta, \phi | Y, X, b) \partial \beta ~ \partial \phi
 } \\
-&= \int \int_{\beta \in \boldsymbol{B_i}} 
+&= \int \int_{\beta \in B_i} 
 \frac{
-  f (Y | X, \beta, \phi)_{1-b} ~  \frac{p_u (\beta, \phi | Y, X, b)}{\int \int_{\beta \in \boldsymbol{B_i}} p_u (\beta | Y, X, b) \partial \beta ~ \partial \phi}
+  f (Y | X, \beta, \phi)_{1-b} ~  \frac{p_u (\beta, \phi | Y, X, b)}{\int \int_{\beta \in B_i} p_u (\beta, \phi | Y, X, b) \partial \beta ~ \partial \phi}
 }{
-  \int \int f(Y|X, \beta, \phi)_{1-b} ~ p_u(\beta | Y, X, b) \partial \beta ~ \partial \phi
+  \int \int f(Y|X, \beta, \phi)_{1-b} ~ p_u(\beta, \phi | Y, X, b) \partial \beta ~ \partial \phi
 } \partial \beta ~ \partial \phi \\
 &= \frac{
-   \int \int_{\beta \in \boldsymbol{B_i}} P_u(\beta|Y, X) ~ \partial \beta ~ \partial \phi
+   \int \int_{\beta \in B_i} P_u(\beta, \phi|Y, X) ~ \partial \beta ~ \partial \phi
 }{
-  \int\int_{\beta \in \boldsymbol{B_i}} p_u(\beta | Y, X, b) \partial \beta ~ \partial \phi
+  \int\int_{\beta \in B_i} p_u(\beta, \phi | Y, X, b) \partial \beta ~ \partial \phi
 }.
 \end{aligned}
 \]
@@ -503,7 +471,7 @@ Similarly, researchers may categorize continuous variables.
 Such variation in measurement and data handling results in hypotheses with different complexities, affecting the resulting Bayes factors.
 The upcoming section presents part one of the simulations, which assesses to what extent the evaluation hypotheses with different complexities due to different choices in data handling affect the performance of \emph{BES} in terms of the aggregated support for the true hypothesis.
 Hereafter, a second set of simulations zooms in on those scenarios in which \emph{BES} performs inadequately.
-The simulations are conducted in \texttt{R} \citetext{\citealp[Version 4.1.0; a full simulation archive containing all \texttt{R}-scripts and results is available on \href{https://www.github.com/thomvolker/Master_Thesis/tree/master/MSBBSS/simulations}{GitHub}]{R}; \citealp[see][]{volker_bes_manuscript_ms_repo}}.
+The simulations are conducted in \texttt{R} \citetext{\citealp[Version 4.2.1; a full simulation archive containing all \texttt{R}-scripts and results is available on \href{https://www.github.com/thomvolker/Master_Thesis/tree/master/MSBBSS/simulations}{GitHub}]{R}; \citealp[see][]{volker_bes_manuscript_ms_repo}}.
 
 \hypertarget{simulations-part-1---assessing-the-effect-of-complexity}{%
 \subsection{Simulations part 1 - assessing the effect of complexity}\label{simulations-part-1---assessing-the-effect-of-complexity}}
