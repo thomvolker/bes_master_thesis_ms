@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Combining support for hypotheses over heterogeneous studies with Bayesian Evidence Synthesis: A simulation study</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Supervisor: Prof. Dr. Irene Klugkist" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+.title[
+# Combining support for hypotheses over heterogeneous studies with Bayesian Evidence Synthesis: A simulation study
+]
+.subtitle[
+## Thom Volker
+]
+.author[
+### Supervisor: Prof. Dr. Irene Klugkist
+]
+.institute[
+### Utrecht University
+]
+.date[
+### augustus 2022
+]
+
+---
+
+
+
+
+
+&lt;style type="text/css"&gt;
+.remark-slide-content {
+    font-size: 26px;
+    padding: 1em 4em 1em 4em;
+}
+.remark-slide-content &gt; h1 {
+  font-size: 45px;
+}
+
+&lt;/style&gt;
+
+# Science is cumulative
+
+&lt;br&gt;
+
+&lt;img src="science.jpg" width="1403" /&gt;
+
+
+???
+
+Scientific claims gain credibility by replicability, especially if replication under different circumstances and with varying designs yields equivalent results. 
+However, as the heterogeneity between studies increases, it is not straightforward to aggregate the results of the studies statistically. 
+Conventional approaches for research synthesis as meta-analysis are not applicable when the parameter estimates of the studies are not comparable.
+
+
+---
+
+# Bayesian Evidence Synthesis
+
+Allows to aggregate heterogeneous sources of evidence.
+
+.pull-left[
+
+- By combining support for hypotheses rather than parameter estimates;
+
+&lt;br&gt;
+
+- and using Bayes factors / posterior model probabilities as measures of support.
+
+]
+
+.pull-right[
+
+
+![](defense_files/figure-html/unnamed-chunk-2-1.gif)&lt;!-- --&gt;
+
+]
+
+???
+
+Bayesian Evidence Synthesis provides a solution to this problem, by shifting the focus from pooling parameter estimates to focusing on hypothesis evaluation.
+In each study, the support for the overarching theory can be expressed using a Bayes factor, which balances the fit of a hypothesis to the data with the complexity of the hypothesis.
+As conceptually shown in this figure, the obtained Bayes factors can be combined sequentially to obtain the aggregated support over studies for the overarching theory. 
+
+
+---
+
+# Investigating Bayesian Evidence Synthesis
+
+To what extent do the complexity of the hypothesis of interest and the choice of alternative hypothesis affect the performance of Bayesian Evidence Synthesis?
+
+&lt;img src="defense_files/figure-html/unnamed-chunk-3-1.png" width="90%" /&gt;
+
+???
+
+To provide guidelines on the applicability of Bayesian Evidence Synthesis in realistic settings, we conducted a simulation study. 
+We assessed to what extent the complexity of the hypothesis of interest and the choice of alternative hypothesis affect the performance of Bayesian Evidence Synthesis under varying amounts of statistical power. 
+Complexity reflects how restrictive a hypothesis is with respect to admissible parameter values.
+A larger complexity, here in the upper left figure, allows for a broader range of parameter values than a smaller complexity in the lower left figure. 
+We compared the hypothesis of interest against an unconstrained hypothesis, allowing the model parameters to take any value, and a complement hypothesis, allowing the model to take parameter values outside the constraints of the hypothesis of interest. 
+
+---
+
+# The performance of Bayesian Evidence Synthesis
+
+&lt;img src="defense_files/figure-html/BF91011-1.png" width="100%" /&gt;
+
+???
+
+
+Our simulations showed that under sufficient power, Bayesian Evidence Synthesis performs adequately. 
+Regardless of the complexity of the hypothesis of interest and the alternative, the support for the support for the correct hypothesis increases as more studies are added, as indicated by the orange lines above zero, indicating increasing support for the true hypothesis, shown on the y-axis, when more studies are added, shown on the x-axis. 
+
+
+Things get interesting when the studies have insufficient statistical power.
+In the upper two plots, the hypothesis of interest has the same complexity as its complement.
+Accordingly, comparing against the unconstrained hypothesis on the left yields support against the true hypothesis, as the blue lines decrease below zero, whereas comparing against the complement on the right yields support for the true hypothesis.
+This is due to the fact that the support for the hypothesis of interest has an upper bound when comparing against the unconstrained, weighing evidence against the hypothesis of interest heavier than evidence for this hypothesis.
+When the hypothesis of interest has the same complexity as its complement, support for and against the hypothesis of interest is weighted equally, and favors the true hypothesis of interest. 
+
+In the lower figures, the hypothesis of interest constrains multiple parameters simultaneously, resulting in a smaller complexity.
+Here, regardless of the alternative hypothesis, the support for the hypothesis of interest decreases with the number of studies, as shown by the blue lines. 
+Under little statistical power, estimates vary considerably. 
+When constraining multiple parameters simultaneously, at least one of the constraints is often violated, resulting in a relatively poorly fitting hypothesis.
+Even if a different constraint is violated in each study, the aggregated support will favor both alternative hypotheses.
+
+Hence, if studies lack statistical power, the performance of Bayesian Evidence Synthesis decreases, especially when evaluating against the unconstrained hypothesis, or when addressing multiple parameters simultaneously.
+If studies have sufficient statistical power, Bayesian Evidence Synthesis opens new avenues for aggregating evidence over heterogeneous studies. 
+
+---
+
+class: center, middle
+
+# Questions?
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

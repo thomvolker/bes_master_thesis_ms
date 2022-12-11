@@ -1,0 +1,109 @@
+---
+title: "Bayesian Evidence Synthesis"
+author: "Thom Volker"
+date: "`r format(Sys.time(), '%d-%m-%Y')`"
+output: 
+  ioslides_presentation:
+    incremental: false
+    logo: uu_logo.png
+bibliography: "../../thesis.bib"
+csl: "../../apa-6th-edition.csl"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Replication {.build}
+
+Many scholars have advocated for the importance of replication.
+
+<div class="centered">
+
+```{r, message = F, warning = F, fig.height = 3, fig.width = 10, out.width = '100%'}
+library(purrr)
+library(meta)
+
+set.seed(1996)
+
+nstudies <- 6
+
+studies <- map(1:nstudies, ~rnorm(10, -1, 3))
+
+meta_data2 <- list(n = sapply(studies, function(x) length(x)),
+                   means = sapply(studies, mean),
+                   sds = sapply(studies, sd))
+
+
+metamean(n = meta_data2$n,
+         mean = meta_data2$mean,
+         sd = meta_data2$sds) %>% forest(comb.fixed = T,
+                                         comb.random = F,
+                                         overall = T,
+                                         overall.hetstat = F)
+
+```
+
+</div>
+
+Direct replication is nice, but not enough.
+
+## Conceptual replications
+
+- If a study is methodologically flawed, all direct replications will inherently exploit the flaws.
+
+- Conceptual replications try to address a single problem from different angles. <!-- And thus inherently use different methodologies --> 
+  * Different methodologies
+  * Different operationalizations
+
+- But how should we combine multiple studies with varying designs?
+
+## Bayesian Evidence Synthesis
+
+<!-- Meta analysis and sequantial updating are not applicable, so we need something else, which is available in the form of Bayesian Evidence Synthesis -->
+
+Instead of pooling parameter estimates, Bayesian Evidence Synthesis expresses the support for a given hypothesis in terms of a Bayes Factor [@kuiper_combining_2013].
+
+1. Construct study-specific hypotheses that reflect the models and operationalizations at hand.
+
+2. Express the support for the study specific hypotheses in terms of a Bayes Factor. 
+
+3. Translate the Bayes Factor into posterior model probabilities.
+
+4. Use the posterior model probabilities as prior model probabilities for the next study, and continue updating until all studies are addressed.
+
+## Research question
+
+A theoretical justification for the use of BES has been outlined [@kuiper_combining_2013].
+
+However, does the method work in practice as well?
+
+How does BES behave if we combine data from three different studies (OLS regression, probit regression and logistic regression)?
+
+To what extent do power issues affect BES?
+
+## Simulation
+
+Conditions:
+
+We tested support for a single (true) hypothesis of interest versus an unconstrained hypothesis:
+
+- $H_1: \beta_1 < \beta_2 < \beta_3 < \beta_4; ~~~~~ H_u: \beta_1, \beta_2, \beta_3, \beta_4$
+
+This hypothesis was evaluated in three different studies.
+
+- Continuous outcome, OLS regression.
+- Binary outcome, probit regression. 
+- Binary outcome, logistic regression.
+
+- Varying sample sizes ($n \in \{25, 50, 100, 200, 400, 800\}$) and effect sizes ($R^2 \in \{0.02, 0.09, 0.25\}$).
+
+## Results
+
+![](/Users/thomvolker/Documents/MSBBSS/research_report_volker/research_report_volker_files/figure-latex/fig1-1.png)
+
+
+# Questions / comments / tips?
+
+## References

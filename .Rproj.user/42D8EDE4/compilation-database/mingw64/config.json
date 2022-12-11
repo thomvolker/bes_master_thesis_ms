@@ -1,0 +1,29 @@
+{
+    "args": [
+        "-std=gnu++11",
+        "-IC:/PROGRA~1/R/R-42~1.1/include",
+        "-DNDEBUG",
+        "-fopenmp",
+        "-IC:/PROGRA~1/RPACKA~1/Rcpp/include",
+        "-DEIGEN_DONT_VECTORIZE",
+        "-nostdinc",
+        "-U_MSC_VER",
+        "-D__GNUC__=10",
+        "-D__GNUC_MINOR__=3",
+        "-D__GNUC_PATCHLEVEL__=0",
+        "-IC:/rtools42/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include/c++",
+        "-IC:/rtools42/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include/c++/x86_64-w64-mingw32.static.posix",
+        "-IC:/rtools42/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include/c++/backward",
+        "-IC:/rtools42/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include",
+        "-IC:/rtools42/x86_64-w64-mingw32.static.posix/include",
+        "-IC:/rtools42/x86_64-w64-mingw32.static.posix/lib/gcc/x86_64-w64-mingw32.static.posix/10.3.0/include-fixed",
+        "-include",
+        "C:/Users/5868777/surfdrive/Documents/bes_master_thesis_ms/.Rproj.user/42D8EDE4/compilation-database/mingw64/cpp-definitions.h"
+    ],
+    "pch": "RcppArmadillo",
+    "is_cpp": true,
+    "hash": "165166769516516676951651667695",
+    "compiler": "290264439608276909",
+    "rversion": "4.2.1",
+    "dbversion": 1
+}

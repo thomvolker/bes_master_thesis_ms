@@ -1,0 +1,675 @@
+---
+title: "Research report simulations"
+author: 
+  - Thom Volker
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+mainfont: Arial
+fontsize: 12pt
+urlcolor: blue
+output: 
+  html_document:
+    toc: true
+    toc_depth: 1
+    toc_float: true
+    number_sections: true
+    code_folding: hide
+    df_print: paged
+    theme: paper
+    highlight: pygments
+    latexengine: xelatex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, include = FALSE}
+library(tidyverse)
+library(magrittr)
+```
+
+# Simulation 1
+
+```{r, include = F}
+load("../simulations/01_sample_size_equal.RData")
+```
+
+In this simulation, I created data according to a multivariate normal distribution, where all variables had variance $\sigma^2 = 1$. The predictor variables $X$ with dimensions $(n \times k)$ with $n \in \{`r unique(output$n)`\}$ and $k = 4$ were correlated with $\rho = 0.3$. The outcome variable $Y$, and the ratio of the regression coefficients equals $\beta_4 = 4\beta_1, \beta_3 = 3\beta_1, \beta_2 = 2\beta_1$, with the exact size depending on the proportion explained variance $R^2$ of the regression model.
+
+The hypothesis of interest was 
+$$
+H_i: \beta_1 < \beta_2 < \beta_3 < \beta_4,
+$$
+and was evaluated against an unconstrained hypothesis
+$$
+H_u: \beta_1, \beta_2, \beta_3, \beta_4.
+$$
+
+```{r}
+output <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_h1 = map_dbl(bf_u, ~.x[1]),
+         pmp_u = map(bf_u, ~.x / sum(.x)),
+         r2 = paste0("R^2: ", r2))
+
+output %>%
+  group_by(n, r2, model) %>%
+  summarize(bf_h1 = mean(bf_h1), .groups = "drop") %>%
+  ggplot(mapping = aes(x = n, y = bf_h1, col = model)) +
+  geom_line() +
+  geom_hline(yintercept = 1, col = "grey", size = 1) +
+  scale_color_brewer(palette = "Set1") +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  labs(y = expression(BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Individual study Bayes Factor")
+
+hypnames <- c("Hi", "Complement", "Unconstrained")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x, 
+                                            ncol = 3, 
+                                            dimnames = list(NULL, 
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0)) %>%
+  group_by(n, r2, model) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = model)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(y = "Hypothesis selection rates",
+       x = "Sample size",
+       title = "Individual study true hypothesis selection rate")
+
+output %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_h1 = prod(bf_h1), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), y = log(bf_h1), fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x,
+                                            ncol = 3,
+                                            dimnames = list(NULL,
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  group_by(nsim, n, r2) %>%
+  summarise(across(c(Hi, Complement, Unconstrained), prod), .groups = "drop") %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0),
+         Unconstrained = ifelse(Unconstrained > Hi, 1, 0)) %>%
+  group_by(n, r2) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = r2)) +
+  geom_line() +
+  scale_color_brewer(palette = "Set1", labels = scales::parse_format()) +
+  theme_minimal() +
+  labs(y = "True hypothesis rate",
+       x = "Sample size",
+       title = "True hypothesis rate of hypothesis of interest versus unconstrained")
+```
+
+# Simulation 2
+
+Simulation 2 is basically a replication of simulation 1, with as the only difference that in all "meta-studies" there is a single study randomly selected to have a sample size of $n = 25$. So again, the hypothesis of interest that is evaluated is
+$$
+H_i: \beta_1 < \beta_2 < \beta_3 < \beta_4,
+$$
+relative to 
+$$
+H_u: \beta_1, \beta_2, \beta_3, \beta_4.
+$$
+
+```{r, include = F}
+rm(list = ls())
+load("../simulations/02_sample_size_underpowered.RData")
+```
+
+```{r}
+output <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_h1 = map_dbl(bf_u, ~.x[1]),
+         pmp_u = map(bf_u, ~.x / sum(.x)),
+         r2 = paste0("R^2: ", r2))
+
+output %>%
+  group_by(n_initial, r2, model) %>%
+  summarize(bf_h1 = mean(bf_h1), .groups = "drop") %>%
+  ggplot(mapping = aes(x = n_initial, y = bf_h1, col = model)) +
+  geom_line() +
+  geom_hline(yintercept = 1, col = "grey", size = 1) +
+  scale_color_brewer(palette = "Set1") +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  labs(y = expression(BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Individual study Bayes Factor")
+
+hypnames <- c("Hi", "Complement", "Unconstrained")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x, 
+                                            ncol = 3, 
+                                            dimnames = list(NULL, 
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0)) %>%
+  group_by(n_initial, r2, model) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n_initial, y = thr, col = model)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(y = "Hypothesis selection rates",
+       x = "Sample size",
+       title = "Individual study true hypothesis selection rate")
+
+output %>%
+  group_by(nsim, n_initial, r2) %>%
+  summarize(bf_h1 = prod(bf_h1), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n_initial), 
+             y = log(bf_h1), 
+             fill = as.factor(n_initial))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x,
+                                            ncol = 3,
+                                            dimnames = list(NULL,
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  group_by(nsim, n_initial, r2) %>%
+  summarise(across(c(Hi, Complement, Unconstrained), prod), .groups = "drop") %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0),
+         Unconstrained = ifelse(Unconstrained > Hi, 1, 0)) %>%
+  group_by(n_initial, r2) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n_initial, y = thr, col = r2)) +
+  geom_line() +
+  scale_color_brewer(palette = "Set1", labels = scales::parse_format()) +
+  theme_minimal() +
+  labs(y = "True hypothesis rate",
+       x = "Sample size",
+       title = "True hypothesis rate of hypothesis of interest versus unconstrained")
+```
+
+# Simulation 3
+
+Simulation 3 is an extension of simulation 1 in the sense that the number of predictor variables equals $k = 5$, bivariately correlated still with $\rho = 0.3$. The ratio of the regression coefficients now equalled $\beta_5 = 3\beta_1, \beta_4 = 2\beta_1, \beta_3 = \beta_2 = \beta_1$, and hence there are three regression coefficients of equal size.
+
+The hypothesis of interest was
+$$
+H_i: \beta_1 > 0; \beta_2 > 0; \beta_3 > 0,
+$$
+
+evaluated against the unconstrained hypothesis
+$$
+H_u: \beta_1, \beta_2, \beta_3, \beta_4, \beta_5.
+$$
+Hence, not every regression coefficient is included in the hypothesis of interest (the predictors with the largest size are not included in the hypothesis of interest).
+
+
+```{r, include = F}
+rm(list = ls())
+load("../simulations/03_separated_variables.RData")
+```
+
+```{r}
+output <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_h1 = map_dbl(bf_u, ~.x[1]),
+         pmp_u = map(bf_u, ~.x / sum(.x)),
+         r2 = paste0("R^2: ", r2))
+
+output %>%
+  group_by(n, r2, model) %>%
+  summarize(bf_h1 = mean(bf_h1), .groups = "drop") %>%
+  ggplot(mapping = aes(x = n, y = bf_h1, col = model)) +
+  geom_line() +
+  geom_hline(yintercept = 1, col = "grey", size = 1) +
+  scale_color_brewer(palette = "Set1") +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  labs(y = expression(BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Individual study Bayes Factor")
+
+hypnames <- c("Hi", "Complement", "Unconstrained")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x, 
+                                            ncol = 3, 
+                                            dimnames = list(NULL, 
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0)) %>%
+  group_by(n, r2, model) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = model)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(y = "Hypothesis selection rates",
+       x = "Sample size",
+       title = "Individual study true hypothesis selection rate")
+
+output %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_h1 = prod(bf_h1), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), 
+             y = log(bf_h1), 
+             fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x,
+                                            ncol = 3,
+                                            dimnames = list(NULL,
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  group_by(nsim, n, r2) %>%
+  summarise(across(c(Hi, Complement, Unconstrained), prod), .groups = "drop") %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0),
+         Unconstrained = ifelse(Unconstrained > Hi, 1, 0)) %>%
+  group_by(n, r2) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = r2)) +
+  geom_line() +
+  scale_color_brewer(palette = "Set1", labels = scales::parse_format()) +
+  theme_minimal() +
+  labs(y = "True hypothesis rate",
+       x = "Sample size",
+       title = "True hypothesis rate of hypothesis of interest versus unconstrained")
+```
+
+
+# Simulation 4
+
+Simulation 4 is exactly similar to simulation 3, except that now $\beta_1, \beta_2, \beta_3$ are combined into a single variable that is the sum of the three separate variables, which yields the hypothesis of interest
+$$
+H_i: \beta_{sum} > 0, 
+$$
+evaluated against
+$$
+H_u: \beta_{sum}, \beta_4, \beta_5.
+$$
+
+
+```{r, include = F}
+rm(list = ls())
+load("../simulations/04_combined_variable_sum.RData")
+```
+
+```{r}
+output <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_h1 = map_dbl(bf_u, ~.x[1]),
+         pmp_u = map(bf_u, ~.x / sum(.x)),
+         r2 = paste0("R^2: ", r2))
+
+output %>%
+  group_by(n, r2, model) %>%
+  summarize(bf_h1 = mean(bf_h1), .groups = "drop") %>%
+  ggplot(mapping = aes(x = n, y = bf_h1, col = model)) +
+  geom_line() +
+  geom_hline(yintercept = 1, col = "grey", size = 1) +
+  scale_color_brewer(palette = "Set1") +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  labs(y = expression(BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Individual study Bayes Factor")
+
+hypnames <- c("Hi", "Complement", "Unconstrained")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x, 
+                                            ncol = 3, 
+                                            dimnames = list(NULL, 
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0)) %>%
+  group_by(n, r2, model) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = model)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(y = "Hypothesis selection rates",
+       x = "Sample size",
+       title = "Individual study true hypothesis selection rate")
+
+output %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_h1 = prod(bf_h1), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), 
+             y = log(bf_h1), 
+             fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x,
+                                            ncol = 3,
+                                            dimnames = list(NULL,
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  group_by(nsim, n, r2) %>%
+  summarise(across(c(Hi, Complement, Unconstrained), prod), .groups = "drop") %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0),
+         Unconstrained = ifelse(Unconstrained > Hi, 1, 0)) %>%
+  group_by(n, r2) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = r2)) +
+  geom_line() +
+  scale_color_brewer(palette = "Set1", labels = scales::parse_format()) +
+  theme_minimal() +
+  labs(y = "True hypothesis rate",
+       x = "Sample size",
+       title = "True hypothesis rate of hypothesis of interest versus unconstrained")
+```
+
+# Simulation 5
+
+Simulation 5 is exactly similar to simulations 3 and 4, except that now $\beta_1, \beta_2, \beta_3$ are combined into a single variable that is the __mean__, rather than the sum, of the three separate variables. Hence, the hypothesis of interest was
+$$
+H_i: \beta_{mean} > 0, 
+$$
+evaluated against
+$$
+H_u: \beta_{mean}, \beta_4, \beta_5.
+$$
+
+```{r, include = F}
+rm(list = ls())
+load("../simulations/05_combined_variable_mean.RData")
+```
+
+```{r}
+output <- output %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_h1 = map_dbl(bf_u, ~.x[1]),
+         pmp_u = map(bf_u, ~.x / sum(.x)),
+         r2 = paste0("R^2: ", r2))
+
+output %>%
+  group_by(n, r2, model) %>%
+  summarize(bf_h1 = mean(bf_h1), .groups = "drop") %>%
+  ggplot(mapping = aes(x = n, y = bf_h1, col = model)) +
+  geom_line() +
+  geom_hline(yintercept = 1, col = "grey", size = 1) +
+  scale_color_brewer(palette = "Set1") +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  labs(y = expression(BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Individual study Bayes Factor")
+
+hypnames <- c("Hi", "Complement", "Unconstrained")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x, 
+                                            ncol = 3, 
+                                            dimnames = list(NULL, 
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0)) %>%
+  group_by(n, r2, model) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = model)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(y = "Hypothesis selection rates",
+       x = "Sample size",
+       title = "Individual study true hypothesis selection rate")
+
+output %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_h1 = prod(bf_h1), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), 
+             y = log(bf_h1), 
+             fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+output %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x,
+                                            ncol = 3,
+                                            dimnames = list(NULL,
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  group_by(nsim, n, r2) %>%
+  summarise(across(c(Hi, Complement, Unconstrained), prod), .groups = "drop") %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0),
+         Unconstrained = ifelse(Unconstrained > Hi, 1, 0)) %>%
+  group_by(n, r2) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = r2)) +
+  geom_line() +
+  scale_color_brewer(palette = "Set1", labels = scales::parse_format()) +
+  theme_minimal() +
+  labs(y = "True hypothesis rate",
+       x = "Sample size",
+       title = "True hypothesis rate of hypothesis of interest versus unconstrained")
+```
+
+# Simulation 6
+
+In simulation 6, the set-up is fairly similar to simulation 1, except that now the number of predictors equals $k = 2$, with a correlation of $\rho = 0.3$ and a sample size of $n \in \{50, 100, 200, 400, 800\}$. The ratio of regression coefficients here equals $\beta_2 = 2\beta_1$. This situation is adjusted in a second scenario in which $X_2$ is split up in three distinct categories with cut-offs $`r levels(cut(rnorm(1000), qnorm(c(0, 1/3, 2/3, 1))))`$, resulting in an $\beta_{intercept}, \beta_{2D2}, \beta_{2D3}$. Since the smallest group $n = 25$ resulted in complete separation in some datasets, I excluded this sample size.
+
+
+```{r, include = F}
+rm(list = ls())
+load("../simulations/06_dummied_variable.RData")
+```
+
+
+## Single continuous variable
+
+
+```{r}
+output_c <- output_c %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_h1 = map_dbl(bf_u, ~.x[1]),
+         pmp_u = map(bf_u, ~.x / sum(.x)),
+         r2 = paste0("R^2: ", r2))
+
+
+output_c %>%
+  group_by(n, r2, model) %>%
+  summarize(bf_h1 = mean(bf_h1), .groups = "drop") %>%
+  ggplot(mapping = aes(x = n, y = bf_h1, col = model)) +
+  geom_line() +
+  geom_hline(yintercept = 1, col = "grey", size = 1) +
+  scale_color_brewer(palette = "Set1") +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  labs(y = expression(BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Individual study Bayes Factor")
+
+hypnames <- c("Hi", "Complement", "Unconstrained")
+
+output_c %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x, 
+                                            ncol = 3, 
+                                            dimnames = list(NULL, 
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0)) %>%
+  group_by(n, r2, model) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = model)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(y = "Hypothesis selection rates",
+       x = "Sample size",
+       title = "Individual study true hypothesis selection rate")
+
+output_c %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_h1 = prod(bf_h1), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), 
+             y = log(bf_h1), 
+             fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+output_c %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x,
+                                            ncol = 3,
+                                            dimnames = list(NULL,
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  group_by(nsim, n, r2) %>%
+  summarise(across(c(Hi, Complement, Unconstrained), prod), .groups = "drop") %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0),
+         Unconstrained = ifelse(Unconstrained > Hi, 1, 0)) %>%
+  group_by(n, r2) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = r2)) +
+  geom_line() +
+  scale_color_brewer(palette = "Set1", labels = scales::parse_format()) +
+  theme_minimal() +
+  labs(y = "True hypothesis rate",
+       x = "Sample size",
+       title = "True hypothesis rate of hypothesis of interest versus unconstrained")
+```
+
+
+
+## Continuous variable split into dummies
+
+
+```{r}
+output_d <- output_d %>%
+  mutate(bf_u  = map(fit,  ~c(.x[,7], unconstrained = 1)),
+         bf_h1 = map_dbl(bf_u, ~.x[1]),
+         pmp_u = map(bf_u, ~.x / sum(.x)),
+         r2 = paste0("R^2: ", r2))
+
+output_d %>%
+  group_by(n, r2, model) %>%
+  summarize(bf_h1 = mean(bf_h1), .groups = "drop") %>%
+  ggplot(mapping = aes(x = n, y = bf_h1, col = model)) +
+  geom_line() +
+  geom_hline(yintercept = 1, col = "grey", size = 1) +
+  scale_color_brewer(palette = "Set1") +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  labs(y = expression(BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Individual study Bayes Factor")
+
+hypnames <- c("Hi", "Complement", "Unconstrained")
+
+output_d %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x, 
+                                            ncol = 3, 
+                                            dimnames = list(NULL, 
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0)) %>%
+  group_by(n, r2, model) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = model)) +
+  geom_line() +
+  facet_wrap(~r2, labeller = label_parsed) +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1") +
+  labs(y = "Hypothesis selection rates",
+       x = "Sample size",
+       title = "Individual study true hypothesis selection rate")
+
+output_d %>%
+  group_by(nsim, n, r2) %>%
+  summarize(bf_h1 = prod(bf_h1), .groups = "drop") %>%
+  ggplot(aes(x = as.factor(n), 
+             y = log(bf_h1), 
+             fill = as.factor(n))) +
+  geom_boxplot() +
+  geom_hline(yintercept = 0, col = "grey", size = 1) +
+  facet_wrap(~r2, labeller = label_parsed) +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  labs(y = expression(log~BF["H"["i,u"]]),
+       x = "Sample size",
+       title = "Combined Bayes Factor") +
+  theme(legend.position = "none")
+
+output_d %>%
+  mutate(bf_u = map(bf_u, ~as_tibble(matrix(.x,
+                                            ncol = 3,
+                                            dimnames = list(NULL,
+                                                            hypnames))))) %>%
+  unnest(bf_u) %>%
+  group_by(nsim, n, r2) %>%
+  summarise(across(c(Hi, Complement, Unconstrained), prod), .groups = "drop") %>%
+  mutate(Hi = ifelse(Hi > Unconstrained, 1, 0),
+         Unconstrained = ifelse(Unconstrained > Hi, 1, 0)) %>%
+  group_by(n, r2) %>%
+  summarize(thr = mean(Hi), .groups = "drop") %>%
+  ggplot(aes(x = n, y = thr, col = r2)) +
+  geom_line() +
+  scale_color_brewer(palette = "Set1", labels = scales::parse_format()) +
+  theme_minimal() +
+  labs(y = "True hypothesis rate",
+       x = "Sample size",
+       title = "True hypothesis rate of hypothesis of interest versus unconstrained")
+```
+
