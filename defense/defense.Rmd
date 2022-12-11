@@ -1,0 +1,261 @@
+---
+title: "Combining support for hypotheses over heterogeneous studies with Bayesian Evidence Synthesis: A simulation study"
+subtitle: "Thom Volker"
+author: "Supervisor: Prof. Dr. Irene Klugkist"
+institute: "Utrecht University"
+date: "`r format(Sys.Date(), '%B %Y')`"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+```
+
+
+<style type="text/css">
+.remark-slide-content {
+    font-size: 26px;
+    padding: 1em 4em 1em 4em;
+}
+.remark-slide-content > h1 {
+  font-size: 45px;
+}
+
+</style>
+
+# Science is cumulative
+
+<br>
+
+```{r, echo=F}
+knitr::include_graphics("science.jpg")
+```
+
+
+???
+
+Scientific claims gain credibility by replicability, especially if replication under different circumstances and with varying designs yields equivalent results. 
+However, as the heterogeneity between studies increases, it is not straightforward to aggregate the results of the studies statistically. 
+Conventional approaches for research synthesis as meta-analysis are not applicable when the parameter estimates of the studies are not comparable.
+
+
+---
+
+# Bayesian Evidence Synthesis
+
+Allows to aggregate heterogeneous sources of evidence.
+
+.pull-left[
+
+- By combining support for hypotheses rather than parameter estimates;
+
+<br>
+
+- and using Bayes factors / posterior model probabilities as measures of support.
+
+]
+
+.pull-right[
+
+
+```{r, echo = F, cache = T, message = F, warning=F}
+library(dplyr)
+library(ggplot2)
+library(gganimate)
+
+set.seed(1)
+
+no_power <- tibble(`Number of studies` = c(0:20),
+                   Fit = c(0.5, rbeta(20, 1.25, 1)),
+                   Complement = cumprod(Fit / (1 - Fit)),
+                   PMP = Complement / (Complement + 1))
+
+
+
+ggplot(no_power, aes(x = `Number of studies`, y = PMP)) +
+  geom_point(aes(group = seq_along(`Number of studies`)), color = "#0BA6FF", size = 3) +
+  geom_line(aes(group = 1), linetype = "dashed") +
+  ggtitle("Relative plausibility of hypothesis aggregated over studies") +
+  ylab("Aggregated posterior model probability") +
+  ylim(0, 1) +
+  hrbrthemes::theme_ipsum() +
+  transition_reveal(`Number of studies`)
+```
+
+]
+
+???
+
+Bayesian Evidence Synthesis provides a solution to this problem, by shifting the focus from pooling parameter estimates to focusing on hypothesis evaluation.
+In each study, the support for the overarching theory can be expressed using a Bayes factor, which balances the fit of a hypothesis to the data with the complexity of the hypothesis.
+As conceptually shown in this figure, the obtained Bayes factors can be combined sequentially to obtain the aggregated support over studies for the overarching theory. 
+
+
+---
+
+# Investigating Bayesian Evidence Synthesis
+
+To what extent do the complexity of the hypothesis of interest and the choice of alternative hypothesis affect the performance of Bayesian Evidence Synthesis?
+
+```{r, echo = F, message = F, warning = F, dpi = 500, fig.height = 3.5, out.width='90%'}
+library(ggplot2)
+library(magrittr)
+library(gggibbous)
+
+data.frame(y_pos = c(1,1,1,1,1,1),
+           x_pos = c(1,1,1,1,1,1),
+           ratio = c(0.5, 1, 0.5, 0.15, 1, 0.85),
+           right = c(F, F, T, F, F, T),
+           Complexity = factor(c(1,1,1, 2,2,2),
+                               labels = c("Large complexity", "Small complexity")),
+           Hypothesis = factor(c(1,2,3,1,2,3),
+                               labels = c("Hypothesis of interest", "Unconstrained", "Complement"))) %>%
+  ggplot(aes(x = x_pos, y = y_pos)) +
+  geom_moon(aes(ratio = ratio, right = right), fill = "#0BA6FF", size = 25) +
+  facet_grid(rows = vars(Complexity), cols = vars(Hypothesis), switch = "y") +
+  theme_classic() +
+  labs(y = " ", x = " ") +
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  ggtitle("Complexity of hypotheses")
+```
+
+???
+
+To provide guidelines on the applicability of Bayesian Evidence Synthesis in realistic settings, we conducted a simulation study. 
+We assessed to what extent the complexity of the hypothesis of interest and the choice of alternative hypothesis affect the performance of Bayesian Evidence Synthesis under varying amounts of statistical power. 
+Complexity reflects how restrictive a hypothesis is with respect to admissible parameter values.
+A larger complexity, here in the upper left figure, allows for a broader range of parameter values than a smaller complexity in the lower left figure. 
+We compared the hypothesis of interest against an unconstrained hypothesis, allowing the model parameters to take any value, and a complement hypothesis, allowing the model to take parameter values outside the constraints of the hypothesis of interest. 
+
+---
+
+# The performance of Bayesian Evidence Synthesis
+
+```{r BF91011, echo=F, cache=T, message=F, warning=F, fig.height=4.5, out.width='100%', dpi=500, dev='png'}
+library(tidyverse)
+
+load("../output/09_Hu_Hc_1pred.RData")
+output9 <- filter(output, model == "normal")
+load("../output/11_Hu_Hc_3preds.RData")
+output11 <- output
+
+BF9 <- output9 %>%
+  mutate(BF_1unc = map_dbl(fit, ~.x[1, 7]),
+         BF_1comp = map_dbl(fit, ~.x[1,7] / .x[2,7]),
+         `Sample size` = factor(n, 
+                                levels = c(25, 200), 
+                                labels = c("italic('n') == 25",
+                                           "italic('n') == 200")),
+         Model = factor(model, 
+                        levels = c("normal", "logit", "probit"),
+                        labels = c(expression("OLS~regression"),
+                                   expression("Logistic~regression"),
+                                   expression("Probit~regression")))) %>%
+  group_by(nsim, `Sample size`) %>%
+  mutate(log_BES_1unc = cumsum(log(BF_1unc)),
+         log_BES_1comp = cumsum(log(BF_1comp)),
+         log_BES_comp1 = cumsum(log(1/BF_1comp))) %>%
+  pivot_longer(c(log_BES_1unc, log_BES_1comp)) %>%
+  mutate(Alternative = factor(name, 
+                              levels = c("log_BES_1unc", "log_BES_1comp"),
+                              labels = c("Unconstrained", "Complement"))) %>%
+  ggplot(aes(x = study, y = value, 
+             col = `Sample size`, 
+             group = interaction(nsim, `Sample size`, name))) +
+  geom_hline(yintercept = 0, col = "grey", size = 0.2) +
+  geom_line(aes(frame = `study`), alpha = 0.02) +
+  facet_wrap(~Alternative, 
+             labeller = label_parsed,
+             nrow = 1, ncol = 2) +
+  scale_color_manual(values = c("#0BA6FF", "#FF8300"),
+                     labels = scales::parse_format()) +
+  labs(x = "Number of aggregated studies",
+       y = expression(log~BF)) +
+  theme_minimal() +
+  guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  theme(legend.position = "bottom",
+        text = element_text(family = "Times New Roman"),
+        legend.text.align = 0)
+
+
+BF11 <- output11 %>%
+  mutate(BF_1unc = map_dbl(fit, ~.x[1, 7]),
+         BF_1comp = map_dbl(fit, ~.x[1,7] / .x[2,7]),
+         `Sample size` = factor(n, 
+                                levels = c(25, 200), 
+                                labels = c(paste0("italic('n') == ", c(25, 200)))),
+         Model = factor(model, 
+                        levels = c("normal", "logit"),
+                        labels = c(expression("OLS~regression"),
+                                   expression("Logistic~regression")))) %>%
+  group_by(nsim, `Sample size`) %>%
+  mutate(log_BES_1unc = cumsum(log(BF_1unc)),
+         log_BES_1comp = cumsum(log(BF_1comp)),
+         log_BES_comp1 = cumsum(log(1/BF_1comp))) %>%
+  pivot_longer(c(log_BES_1unc, log_BES_1comp)) %>%
+  mutate(Alternative = factor(name, 
+                              levels = c("log_BES_1unc", "log_BES_1comp"),
+                              labels = c("Unconstrained", "Complement"))) %>%
+  ggplot(aes(x = study, 
+             y = value, 
+             col = `Sample size`, 
+             group = interaction(nsim, `Sample size`, name))) +
+  geom_hline(yintercept = 0, col = "grey", size = 0.2) +
+  geom_line(alpha = 0.02) +
+  facet_wrap(~Alternative, labeller = label_parsed, ncol = 2, nrow = 1) +
+  scale_color_manual(values = c("#0BA6FF", "#FF8300"),
+                     labels = scales::parse_format()) +
+  labs(x = "Number of aggregated studies",
+       y = expression(log~BF)) +
+  theme_minimal() +
+  guides(colour = guide_legend(override.aes = list(alpha = 1))) +
+  theme(legend.position = "bottom",
+        text = element_text(family = "Times New Roman"),
+        legend.text.align = 0)
+
+patchwork::wrap_plots(BF9 + 
+                        ggtitle("Complexity: Large") + 
+                        theme(legend.position = "none"),
+                      BF11 +
+                        ggtitle("Complexity: Small"),
+                      nrow = 2)
+
+rm(list = c("output", "output9", "output10", "output11", "BF9", "BF10", "BF11"))
+```
+
+???
+
+
+Our simulations showed that under sufficient power, Bayesian Evidence Synthesis performs adequately. 
+Regardless of the complexity of the hypothesis of interest and the alternative, the support for the support for the correct hypothesis increases as more studies are added, as indicated by the orange lines above zero, indicating increasing support for the true hypothesis, shown on the y-axis, when more studies are added, shown on the x-axis. 
+
+
+Things get interesting when the studies have insufficient statistical power.
+In the upper two plots, the hypothesis of interest has the same complexity as its complement.
+Accordingly, comparing against the unconstrained hypothesis on the left yields support against the true hypothesis, as the blue lines decrease below zero, whereas comparing against the complement on the right yields support for the true hypothesis.
+This is due to the fact that the support for the hypothesis of interest has an upper bound when comparing against the unconstrained, weighing evidence against the hypothesis of interest heavier than evidence for this hypothesis.
+When the hypothesis of interest has the same complexity as its complement, support for and against the hypothesis of interest is weighted equally, and favors the true hypothesis of interest. 
+
+In the lower figures, the hypothesis of interest constrains multiple parameters simultaneously, resulting in a smaller complexity.
+Here, regardless of the alternative hypothesis, the support for the hypothesis of interest decreases with the number of studies, as shown by the blue lines. 
+Under little statistical power, estimates vary considerably. 
+When constraining multiple parameters simultaneously, at least one of the constraints is often violated, resulting in a relatively poorly fitting hypothesis.
+Even if a different constraint is violated in each study, the aggregated support will favor both alternative hypotheses.
+
+Hence, if studies lack statistical power, the performance of Bayesian Evidence Synthesis decreases, especially when evaluating against the unconstrained hypothesis, or when addressing multiple parameters simultaneously.
+If studies have sufficient statistical power, Bayesian Evidence Synthesis opens new avenues for aggregating evidence over heterogeneous studies. 
+
+---
+
+class: center, middle
+
+# Questions?
+
+

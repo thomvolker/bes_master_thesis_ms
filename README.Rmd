@@ -1,0 +1,47 @@
+---
+title: "bes_master_thesis_ms"
+author: Thom Volker
+date: May 13, 2022
+output:
+  md_document:
+    variant: markdown_github
+---
+
+# Volker & Klugkist "Combining support for hypotheses over heterogeneous studies with Bayesian Evidence Synthesis: A simulation study"
+
+This repository contains all code (and results) of the simulations. This repository consists of five folders.
+
+| Folder | Content |
+|:---- |:------------------------- |
+| manuscript | Contains all files belonging to the manuscript <br> - References in `thesis.bib` <br> - Stylesheet for Journal of Mathematical Psychology <br> - Text and code to create figures in `manuscript_volker.Rmd` <br> - Output document `manuscript_volker.pdf` <br> - Required `Latex` packages in `preamble.tex` <br> - Required frontpage in `frontmatter.tex` |
+| scripts | All scripts of the simulations. <br> `00_run_simulations.R` - This script loads all required packages (install first, if required) and runs all individual simulation scripts. <br> `[simulation-number]_[simulation-title].R` - All individual simulation scripts are numbered such that they correspond to the simulations in the paper. <br> `functions.R` - Is a separate file that contains functions to simulate data and obtain results. <br> Note that the code to create the figures and tables in the paper are specified in the `.Rmd` file `manuscript_volker.Rmd`. |
+| output | `[simulation-number]_[simulation-title].RData` - Output of each simulation (data.frame with all simulation outcomes). |
+| DataCpp | Contains the self-written package `DataCpp` which is required to simulate multivariate normal data in `C++` when distributing the simulations over different cores (using `R`-packages `future` and `furrr`) |
+| notes-other-files | Rather self explanatory, this folder contains random files and thoughts that developed somewhere during the project (this ranges from presentations about the topic, the initial project proposal, an intermediate report and some meeting notes). |
+
+
+All data used in this paper is simulated, and is thus not affected by any privacy or confidentiality concerns. 
+Ethical approval has been granted by the FETC at Utrecht University (application number 20-0116).
+
+The archive is stored on [GitHub](https://github.com/thomvolker/bes_master_thesis_ms) to ensure that all materials are and remain openly accessible. 
+
+
+# Machine and package info
+
+```{r, include=F}
+library(tidyverse)
+library(magrittr)
+library(furrr)
+library(BFpack)
+library(Rcpp)
+library(RcppArmadillo)
+# devtools::build("DataCpp")
+# devtools::install("DataCpp")
+library(DataCpp)
+```
+
+
+```{r, echo=F, comment=NA}
+sessioninfo::session_info()
+```
+
