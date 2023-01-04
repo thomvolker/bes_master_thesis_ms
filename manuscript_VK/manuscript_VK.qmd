@@ -49,7 +49,7 @@ csl: apa.csl
 ---
 
 
-```{r setup, include = FALSE, cache=T}
+```{r setup, include = FALSE}
 library(magrittr)
 library(ggplot2)
 library(dplyr)
@@ -1735,4 +1735,17 @@ Figure 7: Aggregated Bayes factors for \textit{incorrect} and \textit{partially 
 Figure 8: Aggregated $PMP$s for \textit{incorrect} and \textit{partially incorrect} hypotheses $H_7: \{\beta_2, \beta_3, \beta_4\} < 0$ and $H_8: \{\beta_1, \beta_2, \beta_3\} > 0$ versus $H_u$ or $H_c$ in simulation 7 and 8 over three studies (with linear, logistic and probit models). Note that the lines of $PMP_{i,u}$ and $PMP_{i,c}$ are completely overlapping in simulation 7.
 
 Figure 9: Cumulative aggregated Bayes factors for the correct hypothesis $H_9: \beta_2 > 0$ in simulation 9, $H_{10}: \beta_1 > 0$ in simulation 10 and $H_{11}: \{\\beta_2, \beta_3, \beta_4\} > 0$ in simulation 11, versus an unconstrained and complement alternative hypothesis over 1 to 150 studies, based on OLS regression models. Note that (i) the scale of the y-axis differs between the simulations, and (ii) the lines for the two sample sizes are overlapping in simulation 10."
+
+```{r, include = F, eval = T}
+ggsave(plot = BF12, path = "figures/", filename = "figure-1.eps", dpi = 800, device = cairo_ps)
+ggsave(plot = PMP12, path = "figures/", filename = "figure-2.eps", dpi = 800, device = cairo_ps)
+ggsave(plot = BF34, path = "figures/", filename = "figure-3.eps", dpi = 800, device = cairo_ps)
+ggsave(plot = PMP34, path = "figures/", filename = "figure-4.eps", dpi = 800, device = cairo_ps)
+ggsave(plot = BF56, path = "figures/", filename = "figure-5.eps", dpi = 800, device = cairo_ps)
+ggsave(plot = PMP56, path = "figures/", filename = "figure-6.eps", dpi = 800, device = cairo_ps)
+ggsave(plot = BF78, path = "figures/", filename = "figure-7.eps", dpi = 800, device = cairo_ps)
+ggsave(plot = PMP78, path = "figures/", filename = "figure-8.eps", dpi = 800, device = cairo_ps)
+ggsave(plot = BF91011, path = "figures/", filename = "figure-9.eps", dpi = 800, device = cairo_ps)
+
+```
 
