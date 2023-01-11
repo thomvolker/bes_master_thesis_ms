@@ -34,16 +34,16 @@ affiliations:
     city: Utrecht
     country: The Netherlands
     postal-code: 3584 CH
-abstract: |
-  Scientific claims gain credibility by replicability, especially if replication under different circumstances and varying designs yields equivalent results. Aggregating results over multiple studies is, however, not straightforward, and when the heterogeneity between studies increases, conventional methods as (Bayesian) meta-analysis and Bayesian sequential updating become infeasible. *Bayesian Evidence Synthesis*, built upon the foundations of the Bayes factor, allows to aggregate the support for conceptually similar hypotheses over studies, regardless of methodological differences. We assess the performance of Bayesian Evidence Synthesis over multiple effect and sample sizes, with a broad set of (inequality-constrained) hypotheses using Monte Carlo simulations, focusing explicitly on the complexity of the hypotheses under consideration. The simulations show that this method can evaluate complex (informative) hypotheses regardless of methodological differences between studies, and performs adequately if the set of studies considered has sufficient statistical power. Additionally, we pinpoint challenging conditions that can lead to unsatisfactory results, and provide suggestions on how to handle these situations.
-keywords:
-  - Bayesian Evidence Synthesis
-  - Bayes factors
-  - replication
-  - hypothesis evaluation
-  - informative hypotheses
-  - research synthesis
-date: last-modified
+# abstract: |
+#   Scientific claims gain credibility by replicability, especially if replication under different circumstances and varying designs yields equivalent results. Aggregating results over multiple studies is, however, not straightforward, and when the heterogeneity between studies increases, conventional methods as (Bayesian) meta-analysis and Bayesian sequential updating become infeasible. *Bayesian Evidence Synthesis*, built upon the foundations of the Bayes factor, allows to aggregate the support for conceptually similar hypotheses over studies, regardless of methodological differences. We assess the performance of Bayesian Evidence Synthesis over multiple effect and sample sizes, with a broad set of (inequality-constrained) hypotheses using Monte Carlo simulations, focusing explicitly on the complexity of the hypotheses under consideration. The simulations show that this method can evaluate complex (informative) hypotheses regardless of methodological differences between studies, and performs adequately if the set of studies considered has sufficient statistical power. Additionally, we pinpoint challenging conditions that can lead to unsatisfactory results, and provide suggestions on how to handle these situations.
+# keywords:
+#   - Bayesian Evidence Synthesis
+#   - Bayes factors
+#   - replication
+#   - hypothesis evaluation
+#   - informative hypotheses
+#   - research synthesis
+# date: last-modified
 bibliography: "thesis.bib"
 csl: apa.csl
 ---
@@ -66,10 +66,36 @@ options(xtable.timestamp = "")
 options(xtable.comment = FALSE)
 ```
 
+```{r}
+#| include: false
+extrafont::loadfonts("win", quiet = TRUE)
+windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
+```
+
+
 \doublespacing
 \widowpenalty10000
 \clubpenalty1000
 
+__Disclosure statement__
+
+The authors report there are no competing interests to declare.
+
+__Data availability statement__
+
+A repository containing all `R`-scripts and results is available on [GitHub](https://www.github.com/thomvolker/Master_Thesis/tree/master/MSBBSS/simulations) [see @volker_bes_manuscript_ms_repo].
+
+\newpage
+
+__Title: "Combining support for hypotheses over heterogeneous studies with Bayesian Evidence Synthesis: A simulation study"__
+
+__Abstract__
+
+Scientific claims gain credibility by replicability, especially if replication under different circumstances and varying designs yields equivalent results. Aggregating results over multiple studies is, however, not straightforward, and when the heterogeneity between studies increases, conventional methods as (Bayesian) meta-analysis and Bayesian sequential updating become infeasible. *Bayesian Evidence Synthesis*, built upon the foundations of the Bayes factor, allows to aggregate the support for conceptually similar hypotheses over studies, regardless of methodological differences. We assess the performance of Bayesian Evidence Synthesis over multiple effect and sample sizes, with a broad set of (inequality-constrained) hypotheses using Monte Carlo simulations, focusing explicitly on the complexity of the hypotheses under consideration. The simulations show that this method can evaluate complex (informative) hypotheses regardless of methodological differences between studies, and performs adequately if the set of studies considered has sufficient statistical power. Additionally, we pinpoint challenging conditions that can lead to unsatisfactory results, and provide suggestions on how to handle these situations.
+
+__Keywords__
+
+Bayesian Evidence Synthesis; Bayes factors; replication; hypothesis evaluation; informative hypotheses; research synthesis
 
 
 # Introduction
@@ -123,8 +149,9 @@ In this paper, we assess the performance of *BES* in various scenarios relevant 
 In multiple simulations, we apply *BES* to aggregate the evidence for conceptually similar hypotheses that are evaluated using different statistical models, while varying the operationalizations of key variables in these hypotheses.
 We restrict the simulations to the evaluation of regression coefficients in three members of the generalized linear model family: ordinary least squares (OLS), logistic and probit regression, because of their widespread appearance in empirical research.
 Note, however, that the applicability of *BES* reaches beyond these methods: as long as conceptually similar hypotheses can be evaluated using Bayes factors, *BES* can be used to aggregate the results.
-Yet, exactly this flexibility may pose challenges to the application of *BES*.
-Different operationalizations of key variables affect the complexities of the hypotheses evaluated in the individual studies. 
+
+This flexibility may pose challenges to the application of *BES*.
+Different operationalizations of key variables may affect the complexities of the hypotheses evaluated in the individual studies. 
 As Bayes factors directly depend on the complexities of the hypotheses, the risk is that the resulting amount of evidence largely depends on the specification of the hypotheses, rather than on their veracity.
 Our simulations assess how common procedures in data handling affect the complexities of the hypotheses and the resulting performance of *BES*.
 Additionally, we investigate in which situations *BES* does not perform adequately, and provide suggestions on how such situations can be handled.
@@ -223,7 +250,7 @@ The corresponding likelihood is defined by
 $$
 f(\boldsymbol{y}|\boldsymbol{X}, \boldsymbol{\beta}) = \prod^n_{i=1} p_i^{y_i} (1 - p_i)^{1 - y_i},
 $$
-where $y_i$ is either $0$ or $1$, and $p_i$ is specified according to the logit link $g(\boldsymbol{\mu}) = \log\Big(\frac{\boldsymbol{\mu}}{1 - \boldsymbol{\mu}}\Big) = \boldsymbol{X\beta}$ for logistic regression, or probit link $g(\boldsymbol{\mu}) = \Phi^{-1}(\boldsymbol{\mu}) = \boldsymbol{X\beta}$, where $\Phi^{-1}$ denotes the inverse of the cumulative distribution function of the standard normal distribution, for probit regression models.
+where $y_i$ is either $0$ or $1$, and $p_i$ is specified according to the logit link $g(\boldsymbol{\mu}) = \log\Big(\frac{\boldsymbol{\mu}}{1 - \boldsymbol{\mu}}\Big) = \boldsymbol{X\beta}$ for logistic regression, or probit link $g(\boldsymbol{\mu}) = \Phi^{-1}(\boldsymbol{\mu}) = \boldsymbol{X\beta}$, where $\Phi^{-1}$ denotes the inverse cumulative distribution function of the standard normal distribution, for probit regression models.
 The dispersion parameter is omitted because it equals $\phi = 1$ for logistic and probit models.
 
 ### Prior distribution
@@ -260,10 +287,10 @@ p_u(\boldsymbol{\beta} | \boldsymbol{y}, \boldsymbol{X}, b) \approx
 \mathcal{N}(\boldsymbol{\hat{\beta}}, \boldsymbol{\hat{\Sigma}_\beta} / b).
 $$
 with mean vector $\boldsymbol{\hat{\beta}}$ and covariance matrix $\boldsymbol{\hat{\Sigma}_{\beta}}/b$. 
-Here, $J$ typically equals the number of independent constraints in all hypotheses of interest within a study, although different specifications are possible [for an elaborate discussion on appropriate values for $J$, see @gu_approximated_2018; @hoijtink_prior_2021].
+Typically, $J$ equals the number of independent constraints in all hypotheses of interest within a study, but different specifications are possible [for an elaborate discussion on appropriate values for $J$, see @gu_approximated_2018; @hoijtink_prior_2021].
 
 After specifying a prior for the unconstrained hypothesis, the encompassing prior approach can be used to obtain a prior for an informative hypothesis by truncating the unconstrained prior [e.g., @klugkist_inequality_2005; @mulder_equality_2010; @mulder_prior_2014]. 
-The prior for an informative hypothesis is proportional to the region of the prior that is in agreement with the constraints imposed by the hypothesis under consideration.
+The prior for an informative hypothesis is proportional to the region of the unconstrained prior that is in agreement with the constraints imposed by the hypothesis under consideration.
 That is, $p_i(\boldsymbol{\beta} | \boldsymbol{y}, \boldsymbol{X}, b) \propto p_u(\boldsymbol{\beta} | \boldsymbol{y}, \boldsymbol{X}, b)\boldsymbol{1}_{\boldsymbol{B}_i}$, where $\boldsymbol{1}_{\boldsymbol{B}_i}$ is an indicator for the admissible parameter space $\boldsymbol{B}_i$ under hypothesis $H_i$ [@gu_approximated_2018].
 
 
@@ -377,7 +404,7 @@ Consequently, $BF_{iu}$ is defined as the proportion of the posterior distributi
 As such, the Bayes factor serves as Occam's razor, by balancing the fit of the data to the hypothesis (i.e., the marginal posterior) with the complexity of the hypothesis.
 
 This formulation of the Bayes factor is relatively easy to compute for both equality and inequality constrained informative hypotheses. 
-Namely, when the hypothesis of interest only contains equality constraints, one can make use of the Savage-Dickey density ratio [@savage_dickey_1971], which yields
+When the hypothesis of interest only contains equality constraints, one can make use of the Savage-Dickey density ratio [@savage_dickey_1971], which yields
 $$
 BF_{i_0u} = \frac{f_{i_0}}{c_{i_0}} = \frac{
   P_u(\boldsymbol{\beta} = \boldsymbol{B}_{i_0} | \boldsymbol{y}, \boldsymbol{X})
@@ -462,12 +489,12 @@ Consider a hypothesis that implies a positive relationship between a construct o
 Whereas some researchers may combine multiple indicators into a single scale score, others may analyze the effects of the separate indicators.
 Similarly, researchers may categorize continuous variables.
 Such variation in measurement and data handling results in hypotheses with different complexities, affecting the resulting Bayes factors.
-The upcoming section presents the first set of eight simulations.
-Here, we assess how different choices in data handling, resulting in conceptually similar hypotheses with different complexities, affect the performance of *BES* in terms of the aggregated support for the true hypothesis.
+The upcoming section presents the first set of eight simulations. 
+We briefly assess how statistical power affects the performance of *BES* in terms of the aggregated support for the true hypothesis, and then zoom in on how different choices in data handling, resulting in conceptually similar hypotheses with different complexities, affect *BES*.
 We first outline the general set-up, after which we discuss the specifics per pair of simulations.
-We integrate the methodological details and the results of the respective simulation(s), to enhance the readability.
+The methodological details and the results of the respective simulation(s) are integrated to enhance the readability.
 Hereafter, a second set of simulations zooms in on those scenarios in which *BES* performs inadequately.
-The simulations are conducted in `R` [@R, Version 4.1.0\; a full simulation archive containing all `R`-scripts and results is available on [GitHub](https://www.github.com/thomvolker/Master_Thesis/tree/master/MSBBSS/simulations); see @volker_bes_manuscript_ms_repo].
+The simulations are conducted in `R` [@R, Version 4.1.0\; a full simulation archive containing all `R`-scripts and results is available on GitHub, see Data Availability Statement].
 
 
 
@@ -475,7 +502,7 @@ The simulations are conducted in `R` [@R, Version 4.1.0\; a full simulation arch
 
 In part one of the simulations, eight simulation conditions are assessed. 
 The focus of these simulations is mainly on how the complexity of the candidate hypotheses affects the performance of *BES*, while simultaneously varying the sample and effect sizes. 
-In all simulations, we consistently apply *BES* on a collection of three studies that all assess the same hypothesis, while varying the hypotheses between the simulation conditions.
+In all simulations, we consistently apply *BES* on a collection of three studies that all assess the same hypothesis.
 The hypotheses are varied in a pairwise manner between simulation conditions, such that a comparison is made between conceptually similar hypotheses that have different complexities, due to different choices in data handling. 
 Such data handling is performed *after* generating the data (we discuss the operationalizations of hypotheses per simulation condition in subsequent sections).
 To demonstrate that *BES* is applicable despite between-study heterogeneity, data representing the three studies is generated and analysed with three statistical models: ordinary least squares (OLS), logistic and probit regression.
@@ -624,7 +651,7 @@ and thus do not consider hypotheses with different complexities, yet.
 
 In simulation 1 and 2, the aggregated Bayes factors for the true hypothesis $H_{1,2}: \beta_4 < \beta_5 < \beta_6$ against the unconstrained hypothesis $H_u$ increase with sample size and effect size (@fig-BF12).
 In simulation 1 (the red boxes), for a small effect size ($R^2 = 0.02$), $H_{1,2}$ is more often supported than $H_u$ only when the sample size is at least $n \geq 400$.
-For $n = 400$ and $R^2 = 0.02$, the median aggregated Bayes factor (the middle horizontal black line each box) is slightly above zero on the logarithmic scale, indicating that there is more support for the true hypothesis $H_{1,2}$ than for $H_u$ in about $50\%$ of the iterations.
+For $n = 400$ and $R^2 = 0.02$, the median aggregated Bayes factor (the middle horizontal black line in each box) is slightly above zero on the logarithmic scale, indicating that there is more support for the true hypothesis $H_{1,2}$ than for $H_u$ in about $50\%$ of the iterations.
 When the effect sizes increase, $H_{1,2}$ is preferred over $H_u$ in most iterations when $n \geq 100$ (when $R^2 = 0.09$) or when $n \geq 50$ (when $R^2 = 0.25$).
 For $800$ observations per study and a large effect, the aggregated Bayes factor approaches an upper bound, that is due to evaluating against an unconstrained alternative hypothesis.
 That is, when the hypothesis fits the data perfectly (i.e., $f_i = 1$), the Bayes factor within a study cannot exceed $1/c_i$, and the aggregated Bayes factor cannot exceed $\prod_t^T 1/c_i^{(t)}$.
@@ -1198,7 +1225,8 @@ In simulation 6, the complexity of the hypothesis of interest is smaller, and th
 For small sample and effect sizes, this renders small $PMP$s, to such an extent that $H_u$ is preferred over $H_6$ for the smallest sample and effect sizes. 
 Yet, the smaller complexity also yields that the maximum $PMP$ when evaluating against $H_u$ is larger in simulation 6 than in simulation 5. 
 If the sample and effect size are sufficiently large, the $PMP$s for $H_6$ are close to $1$, regardless of whether $H_6$ is evaluated against $H_u$ or $H_c$.
-These results show the importance of having adequately powered studies when evaluating a specific hypothesis, because only then the hypothesis obtains convincing support.
+These results show that more statistical power is required in order to evaluate more specific hypotheses.
+
 
 ### Simulation 7 and 8
 
@@ -1278,7 +1306,7 @@ BF78
 #| dpi: 800
 #| dev: "cairo_pdf"
 #| fig-pos: "!t"
-#| fig-cap: "Aggregated $PMP$s for \\textit{incorrect} and \\textit{partially incorrect} hypotheses $H_7: \\{\\beta_2, \\beta_3, \\beta_4\\} < 0$ and $H_8: \\{\\beta_1, \\beta_2, \\beta_3\\} > 0$ versus $H_u$ or $H_c$ in simulation 7 and 8 over three studies (with linear, logistic and probit models). Note that the lines of $PMP_{i,u}$ and $PMP_{i,c}$ are completely overlapping in simulation 7."
+#| fig-cap: "Aggregated $PMP$s for \\textit{incorrect} and \\textit{partially incorrect} hypotheses $H_7: \\{\\beta_2, \\beta_3, \\beta_4\\} < 0$ and $H_8: \\{\\beta_1, \\beta_2, \\beta_3\\} > 0$ versus $H_u$ or $H_c$ in simulation 7 and 8 over three studies (with linear, logistic and probit models). Note that the lines of $PMP_{i,u}$ and $PMP_{i,c}$ are almost completely overlapping in simulation 7."
 
 PMP78 <-
   bind_rows("Simulation 7" = output7,
@@ -1336,7 +1364,7 @@ PMP78
 #| dev: "cairo_pdf"
 #| fig-cap: 
 #|   - "Aggregated Bayes factors for \\textit{incorrect} and \\textit{partially incorrect} hypotheses $H_7: \\{\\beta_2, \\beta_3, \\beta_4\\} < 0$ and $H_8: \\{\\beta_1, \\beta_2, \\beta_3\\} > 0$ versus $H_u$ in simulation 7 and 8 over three studies (with linear, logistic and probit models). Note the different scaling of the y-axis."
-#|   - "Aggregated $PMP$s for \\textit{incorrect} and \\textit{partially incorrect} hypotheses $H_7: \\{\\beta_2, \\beta_3, \\beta_4\\} < 0$ and $H_8: \\{\\beta_1, \\beta_2, \\beta_3\\} > 0$ versus $H_u$ or $H_c$ in simulation 7 and 8 over three studies (with linear, logistic and probit models). Note that the lines of $PMP_{i,u}$ and $PMP_{i,c}$ are completely overlapping in simulation 7."
+#|   - "Aggregated $PMP$s for \\textit{incorrect} and \\textit{partially incorrect} hypotheses $H_7: \\{\\beta_2, \\beta_3, \\beta_4\\} < 0$ and $H_8: \\{\\beta_1, \\beta_2, \\beta_3\\} > 0$ versus $H_u$ or $H_c$ in simulation 7 and 8 over three studies (with linear, logistic and probit models). Note that the lines of $PMP_{i,u}$ and $PMP_{i,c}$ are almost completely overlapping in simulation 7."
 #| fig-env: "figure*"
 wrap_plots(BF7 + labs(title = "Simulation 7"), 
            BF8 + labs(title = "Simulation 8"), ncol = 1)
@@ -1369,9 +1397,9 @@ The first simulations show that *BES* performs adequately, in the sense that the
 Moreover, simulation 7 shows that incorrect hypotheses obtain less support when the sample and effect size increase.
 The main focus of these simulations was on how the complexity of the hypotheses affects the performance of *BES*. 
 Especially in the context of conceptual replications, researchers might want to aggregate the support for hypotheses with different complexities, due to different operationalizations or measurement instruments.
-Unlike conventional research synthesis approaches, *BES* allows to aggregate support for equivalent hypotheses with different complexities and, as simulations 3 to 6 show, renders correct results when the individual studies have sufficient power. 
+Unlike conventional research synthesis approaches, *BES* allows to aggregate support for equivalent hypotheses with different complexities and, as simulations 3 to 6 show, renders satisfactory results when the individual studies have sufficient power. 
 Hence, the support for an overarching theory over studies can be quantified with *BES*, even when studies use different operationalizations. 
-Our findings may even insinuate that, under sufficient power, common procedures in data handling that result in hypotheses with smaller complexities, such as categorizing continuous variables or assessing individual indicators rather than scale scores, can lead to more support on the aggregate level. 
+Our findings may even insinuate that, with sufficient power, common procedures in data handling that result in hypotheses with smaller complexities, such as categorizing continuous variables or assessing individual indicators rather than scale scores, can lead to more support on the aggregate level. 
 After all, the hypotheses with the smallest complexities within a set of studies have the highest upper bound for the Bayes factor against the unconstrained hypothesis.
 However, this conclusion should be drawn with caution, if at all, because it only holds when evaluating against the unconstrained, but not when evaluating against the complement hypothesis. 
 The Bayes factor against the complement tends to infinity when the data fits the hypothesis perfectly, and thus does not benefit from evaluating more specific hypotheses. 
@@ -1387,7 +1415,7 @@ If some of the estimated parameters are typically in line with the hypothesis wh
 Similarly to previous work [e.g., @klugkist_volker], our simulations confirm that if individual studies lack statistical power, *BES* has difficulties finding support for the correct hypothesis. 
 Specifically, including a single underpowered study, as in simulation 1 and 2, reduces the performance of *BES*. 
 Moreover, aggregating over three adequately powered studies provides more support for the correct hypothesis than aggregating over two adequately powered studies and a single underpowered study, even if the total number of observations is higher in the latter scenario.
-Whereas conventional approaches for research synthesis as meta-analysis or Bayesian sequential updating can overcome such power issues, *BES* typically does not, because it answers are different question. 
+Whereas conventional approaches for research synthesis as meta-analysis or Bayesian sequential updating can overcome such power issues, *BES* typically does not, because it answers a different question. 
 Whereas these conventional approaches assess whether the pooled estimate is in line with the hypothesis, *BES* questions to what extent each study provides support for the hypothesis and combines this into a single measure of evidence. 
 Hence, some support against the hypothesis of interest in each study will accumulate when aggregating over studies, and considerable support against this hypothesis in one study is not necessarily counterbalanced by support for this hypothesis in multiple other studies.
 
@@ -1419,10 +1447,10 @@ In all three simulations in part two, the cumulative aggregated Bayes factor is 
 #| fig-height: 5
 #| out-width: 100%
 #| dpi: 500
-#| dev: 'cairo_pdf'
+#| dev: "cairo_pdf"
 #| fig-pos: '!h'
 #| cache: true
-#| fig-cap: "Cumulative aggregated Bayes factors for the correct hypothesis $H_9: \\beta_2 > 0$ in simulation 9, $H_{10}: \\beta_1 > 0$ in simulation 10 and $H_{11}: \\{\\beta_2, \\beta_3, \\beta_4\\} > 0$ in simulation 11, versus an unconstrained and complement alternative hypothesis over 1 to 150 studies, based on OLS regression models. Note that (i) the scale of the y-axis differs between the simulations, and (ii) the lines for the two sample sizes are overlapping in simulation 10."
+#| fig-cap: "Cumulative aggregated Bayes factors for the correct hypothesis $H_9: \\beta_2 > 0$ in simulation 9, $H_{10}: \\beta_1 > 0$ in simulation 10 and $H_{11}: \\{\\beta_2, \\beta_3, \\beta_4\\} > 0$ in simulation 11, versus an unconstrained and complement alternative hypothesis over 1 to 150 studies, based on OLS regression models. Note that (i) the scale of the y-axis differs between the simulations, and (ii) the lines for the two sample sizes are almost completely overlapping in simulation 10."
 load("../output/09_Hu_Hc_1pred.RData")
 output9 <- filter(output, model == "normal")
 load("../output/10_Hu_Hc_1pred_wrong.RData")
@@ -1496,7 +1524,7 @@ Additionally, the absence of an upper bound yields that the support for $H_9$ in
 In simulation 10, we investigate a similar, but incorrect, hypothesis $H_{10}: \beta_1 > 0$ ($\beta_{1}=0$ in the population; Table \ref{tbl-coefs}).
 This renders $H_u$ the only true hypothesis, because $H_c$ and $H_{10}$ are equally incorrect.
 Evaluating against the unconstrained hypothesis renders more support for $H_u$ than for $H_{10}$, regardless of the sample size.
-When the true parameter value is on the boundary of the hypothesis of interest, comparing against the complement renders substantial variability in the support for $H_{10}$ and $H_c$, regardless of the sample size (note that the lines for the two sample sizes are completely overlapping). 
+When the true parameter value is on the boundary of the hypothesis of interest, comparing against the complement renders substantial variability in the support for $H_{10}$ and $H_c$, regardless of the sample size (note that the lines for the two sample sizes are almost completely overlapping). 
 Although $H_{10}$ and $H_c$ obtain, on average, the same support, the individual iterations show considerable support for either of the two.
 Hence, there is a downside to evaluating against the complement hypothesis, because it is possible to find considerable support for or against a hypothesis on the aggregate level, while there is no effect in reality.
 
@@ -1512,7 +1540,7 @@ For example, the hypothesis $H_{11}$ can be deconstructed into three simpler hyp
 Evaluating each sub-hypothesis against the unconstrained hypothesis and its complements yields an identical outcome as in simulation 9.
 Each sub-hypothesis obtains more support than the unconstrained hypothesis when the sample size is large, but $H_u$ obtains more support for small sample sizes.
 When evaluating each hypothesis against its complement, the sub-hypotheses obtain considerable support, regardless of the sample size. 
-Thus, whereas evaluating a multifaceted hypothesis as $H_{11}$ leads to support against the hypothesis of interest, evaluating the separate components of this hypothesis provides support for each component.
+Thus, whereas evaluating a multifaceted hypothesis as $H_{11}$ leads to support against the true hypothesis of interest for smaller sample sizes, evaluating the separate components of this hypothesis provides support for each component.
 
 
 
@@ -1531,7 +1559,7 @@ On the aggregate level, there thus is still more support for the unconstrained h
 Evaluating against the complement weighs the evidence for both hypotheses equally heavy under these circumstances, and thus provides increasing support for the correct hypothesis. 
 
 When the hypothesis of interest places constraints on multiple parameters, evaluating against the complement results in somewhat more power than evaluating against the unconstrained, but both provide support against the correct hypothesis of interest when the studies are underpowered. 
-Whereas part one already showed that evaluating hypotheses with smaller complexities is only feasible when studies are adequately powered, part two of the simulations shows that adding more studies provides no solution. 
+Whereas part one already showed that evaluating hypotheses with smaller complexities is only appropriate when studies are adequately powered, part two of the simulations shows that adding more studies provides no solution. 
 The hypothesis of interest constrained three parameters, resulting in 8 possible parameter orderings of which only one was correct. 
 When the individual studies have little power, the probability that at least one of the estimated parameters falls outside the constraints imposed by the hypothesis is considerable, due to the fact that the parameters are generally estimated inaccurately. 
 Regardless of which constraint is violated, the hypothesis may fit poorly in each study, resulting in aggregated support against the hypothesis that further increases with the number of studies. 
@@ -1584,7 +1612,7 @@ If the results are contradictory, researchers may have to acknowledge that consi
 # Conclusion
 
 In multiple simulations, we examined the performance of Bayesian Evidence Synthesis when evaluating hypotheses with different complexities against different alternatives under various sample and effect sizes. 
-Part one of the simulations showed that *BES* is applicable regardless of differences in analysis models in the set of studies under consideration, and renders correct results if the individual studies have sufficient statistical power.
+Part one of the simulations showed that *BES* is applicable regardless of differences in analysis models in the set of studies under consideration, and renders satisfactory results if the individual studies have sufficient statistical power.
 The simulations emphasized the importance of power when aggregating evidence over studies, especially when evaluating more specific hypotheses.
 For small sample and effect sizes, evaluating a hypothesis with a relatively small complexity generally results in support for the unconstrained and complement hypotheses.
 If the Bayes factors within the studies yield more support for the alternatives than for the specific correct hypothesis, adding more studies that are also underpowered will not solve the issue. 
@@ -1681,10 +1709,6 @@ BF13 <- output13 %>%
 
 We gratefully acknowledge stimulating discussions with Vincent Buskens and Werner Raub.
 
-# Data availability statement
-
-A repository containing all `R`-scripts and results is available on [GitHub](https://www.github.com/thomvolker/Master_Thesis/tree/master/MSBBSS/simulations) [see @volker_bes_manuscript_ms_repo].
-
 # References
 
 \small
@@ -1715,6 +1739,124 @@ cat("Table 1. Population-level regression coefficients for ordinary least square
 
 {{< pagebreak >}}
 
+# Figures
+
+```{r}
+#| include: false
+#| eval: true
+#| cache: true
+
+windowsFonts("Times New Roman" = windowsFont("Times New Roman"))
+
+ggsave(plot = BF12, 
+       path = "figures/", 
+       filename = "figure-1.jpeg", 
+       height = 2.8,
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+
+ggsave(plot = PMP12, 
+       path = "figures/", 
+       filename = "figure-2.jpeg", 
+       height = 2.4,
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+
+ggsave(plot = BF34, 
+       path = "figures/", 
+       filename = "figure-3.jpeg", 
+       height = 2.8,
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+
+ggsave(plot = PMP34, 
+       path = "figures/", 
+       filename = "figure-4.jpeg", 
+       height = 2.8,
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+
+ggsave(plot = BF56, 
+       path = "figures/", 
+       filename = "figure-5.jpeg", 
+       height = 2.8,
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+
+ggsave(plot = PMP56, 
+       path = "figures/", 
+       filename = "figure-6.jpeg", 
+       height = 2.4,
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+
+ggsave(plot = BF78, 
+       path = "figures/", 
+       filename = "figure-7.jpeg", 
+       height = 2.8,
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+
+ggsave(plot = PMP78, 
+       path = "figures/", 
+       filename = "figure-8.jpeg", 
+       height = 2.4, 
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+
+ggsave(plot = BF91011, 
+       path = "figures/", 
+       filename = "figure-9.jpeg", 
+       height = 5,
+       width = 5.5,
+       dpi = 800, 
+       device = "jpeg")
+```
+
+![](figures/figure-1.jpeg){width=100%}
+
+Figure 1.
+
+![](figures/figure-2.jpeg){width=100%}
+
+Figure 2.
+
+![](figures/figure-3.jpeg){width=100%}
+
+Figure 3.
+
+![](figures/figure-3.jpeg){width=100%}
+
+Figure 4.
+
+![](figures/figure-5.jpeg){width=100%}
+
+Figure 5.
+
+![](figures/figure-6.jpeg){width=100%}
+
+Figure 6.
+
+![](figures/figure-7.jpeg){width=100%}
+
+Figure 7.
+
+![](figures/figure-8.jpeg){width=100%}
+
+Figure 8. 
+
+![](figures/figure-9.jpeg){width=100%}
+
+Figure 9.
+
 # Figure captions
 
 
@@ -1732,20 +1874,9 @@ Figure 6: Aggregated $PMP$s for hypothesis $H_5: \beta_{\text{scale}} > 0$ versu
 
 Figure 7: Aggregated Bayes factors for \textit{incorrect} and \textit{partially incorrect} hypotheses $H_7: \{\beta_2, \beta_3, \beta_4\} < 0$ and $H_8: \{\beta_1, \beta_2, \beta_3\} > 0$ versus $H_u$ in simulation 7 and 8 over three studies (with linear, logistic and probit models).
 
-Figure 8: Aggregated $PMP$s for \textit{incorrect} and \textit{partially incorrect} hypotheses $H_7: \{\beta_2, \beta_3, \beta_4\} < 0$ and $H_8: \{\beta_1, \beta_2, \beta_3\} > 0$ versus $H_u$ or $H_c$ in simulation 7 and 8 over three studies (with linear, logistic and probit models). Note that the lines of $PMP_{i,u}$ and $PMP_{i,c}$ are completely overlapping in simulation 7.
+Figure 8: Aggregated $PMP$s for \textit{incorrect} and \textit{partially incorrect} hypotheses $H_7: \{\beta_2, \beta_3, \beta_4\} < 0$ and $H_8: \{\beta_1, \beta_2, \beta_3\} > 0$ versus $H_u$ or $H_c$ in simulation 7 and 8 over three studies (with linear, logistic and probit models). Note that the lines of $PMP_{i,u}$ and $PMP_{i,c}$ are almost completely overlapping in simulation 7.
 
-Figure 9: Cumulative aggregated Bayes factors for the correct hypothesis $H_9: \beta_2 > 0$ in simulation 9, $H_{10}: \beta_1 > 0$ in simulation 10 and $H_{11}: \{\\beta_2, \beta_3, \beta_4\} > 0$ in simulation 11, versus an unconstrained and complement alternative hypothesis over 1 to 150 studies, based on OLS regression models. Note that (i) the scale of the y-axis differs between the simulations, and (ii) the lines for the two sample sizes are overlapping in simulation 10."
+Figure 9: Cumulative aggregated Bayes factors for the correct hypothesis $H_9: \beta_2 > 0$ in simulation 9, $H_{10}: \beta_1 > 0$ in simulation 10 and $H_{11}: \{\beta_2, \beta_3, \beta_4\} > 0$ in simulation 11, versus an unconstrained and complement alternative hypothesis over 1 to 150 studies, based on OLS regression models. Note that (i) the scale of the y-axis differs between the simulations, and (ii) the lines for the two sample sizes are overlapping in simulation 10.
 
-```{r, include = F, eval = T}
-ggsave(plot = BF12, path = "figures/", filename = "figure-1.eps", dpi = 800, device = cairo_ps)
-ggsave(plot = PMP12, path = "figures/", filename = "figure-2.eps", dpi = 800, device = cairo_ps)
-ggsave(plot = BF34, path = "figures/", filename = "figure-3.eps", dpi = 800, device = cairo_ps)
-ggsave(plot = PMP34, path = "figures/", filename = "figure-4.eps", dpi = 800, device = cairo_ps)
-ggsave(plot = BF56, path = "figures/", filename = "figure-5.eps", dpi = 800, device = cairo_ps)
-ggsave(plot = PMP56, path = "figures/", filename = "figure-6.eps", dpi = 800, device = cairo_ps)
-ggsave(plot = BF78, path = "figures/", filename = "figure-7.eps", dpi = 800, device = cairo_ps)
-ggsave(plot = PMP78, path = "figures/", filename = "figure-8.eps", dpi = 800, device = cairo_ps)
-ggsave(plot = BF91011, path = "figures/", filename = "figure-9.eps", dpi = 800, device = cairo_ps)
 
-```
 
