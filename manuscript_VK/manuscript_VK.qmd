@@ -1775,7 +1775,7 @@ ggsave(plot = BF34,
 ggsave(plot = PMP34, 
        path = "figures/", 
        filename = "figure-4.jpeg", 
-       height = 2.8,
+       height = 2.4,
        width = 5.5,
        dpi = 800, 
        device = "jpeg")
@@ -1833,7 +1833,7 @@ Figure 2.
 
 Figure 3.
 
-![](figures/figure-3.jpeg){width=100%}
+![](figures/figure-4.jpeg){width=100%}
 
 Figure 4.
 
